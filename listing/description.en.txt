@@ -1,0 +1,7 @@
+Happ Toggle brings Happ VPN control and connection speed testing to Elgato Stream Deck. Toggle VPN from a key or Stream Deck+ control, see connection status, and run a test without searching for the Happ window. Windows 10/11, Stream Deck 7.6 or later, and Happ are required.
+
+Choose Yandex, Cloudflare or Speedtest.net for download, upload and HTTP latency measurements. Start tests manually, cancel with another press, or enable a delayed test after connecting. Stream Deck+ supports service selection by dial and VPN control by a long press or screen tap. Stream Deck Neo Infobar displays tests started by a key on the same device.
+
+Personalize the layout, number font, units, status symbol, optional latency and subtle animations. Russian and English settings are included.
+
+This is an independent integration, not an official Happ, Elgato or Ookla product. Results are not guaranteed to match a browser test. The selected service is a speed-test service, not a Happ VPN server. Tests use synthetic traffic and can consume significant data. Developed with AI assistance.

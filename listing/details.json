@@ -1,0 +1,28 @@
+{
+  "name": "Happ Toggle",
+  "version": "1.12.0",
+  "author": "Alexey Storozhilov",
+  "organization": "Alexey Storozhilov",
+  "publicPluginUUID": "com.llwhite.happtoggle",
+  "summary": "Happ VPN control and measured connection speed for Stream Deck keys, dials and Neo Infobar.",
+  "suggestedCategory": "Productivity",
+  "suggestedSearchTerms": ["Happ", "VPN", "speed test", "Stream Deck+", "Stream Deck Neo", "connection status"],
+  "githubTopics": ["streamdeck", "stream-deck-plugin", "happ", "vpn", "windows", "speedtest", "stream-deck-plus", "stream-deck-neo"],
+  "requirements": ["Windows 10 or Windows 11", "Stream Deck 7.6 or later", "Happ with happ://toggle_without_ui support", "Windows curl.exe and powershell.exe"],
+  "languages": ["English", "Russian"],
+  "links": {
+    "author": "https://github.com/llWHiTE",
+    "happ": "https://github.com/Happ-proxy/happ-desktop",
+    "intendedRepository": "https://github.com/llWHiTE/happ-toggle",
+    "intendedPrivacy": "https://github.com/llWHiTE/happ-toggle/blob/main/PRIVACY.md"
+  },
+  "linkStatus": "Repository/privacy links are intended targets, not confirmed published links. Author and Happ URLs are public links.",
+  "media": {
+    "icon": "../media/marketplace-icon.png",
+    "cover": "../media/cover.png",
+    "gallery": ["../media/gallery-01-control.png", "../media/gallery-02-speed.png", "../media/gallery-03-dial.png", "../media/gallery-04-neo.png"],
+    "githubSocialPreview": "../media/github-social-preview.png"
+  },
+  "aiDisclosure": "Developed and prepared with AI assistance; human review and hardware testing are required before Marketplace submission.",
+  "publicationStatus": "Official CLI validation/packaging passed; authenticated GitHub upload pending verification. Not submitted to Marketplace."
+}

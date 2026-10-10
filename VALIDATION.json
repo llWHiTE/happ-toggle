@@ -1,0 +1,69 @@
+{
+  "version": "1.12.0",
+  "syntax": "passed",
+  "json": "passed",
+  "descriptionCharacters": 1074,
+  "artwork": [
+    {
+      "file": "cover.png",
+      "width": 1920,
+      "height": 960
+    },
+    {
+      "file": "gallery-01-control.png",
+      "width": 1920,
+      "height": 960
+    },
+    {
+      "file": "gallery-02-speed.png",
+      "width": 1920,
+      "height": 960
+    },
+    {
+      "file": "gallery-03-dial.png",
+      "width": 1920,
+      "height": 960
+    },
+    {
+      "file": "gallery-04-neo.png",
+      "width": 1920,
+      "height": 960
+    },
+    {
+      "file": "github-social-preview.png",
+      "width": 1280,
+      "height": 640
+    },
+    {
+      "file": "marketplace-icon.png",
+      "width": 288,
+      "height": 288
+    },
+    {
+      "file": "plugin-icon-256.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "file": "plugin-icon-512.png",
+      "width": 512,
+      "height": 512
+    }
+  ],
+  "officialElgatoCLI": {
+    "status": "passed",
+    "version": "1.10.2",
+    "commands": [
+      "validate",
+      "pack"
+    ],
+    "namespace": "com.llwhite.happtoggle"
+  },
+  "githubUpload": "Authenticated llWHiTE; publication state is recorded separately after upload.",
+  "hardwareAndNetworkTests": "not run",
+  "drm": "Officially packaged SDK2/raw WebSocket plugin; DRM not asserted or independently tested.",
+  "namespaces": [
+    "com.user.happtoggle",
+    "com.llwhite.happtoggle"
+  ]
+}

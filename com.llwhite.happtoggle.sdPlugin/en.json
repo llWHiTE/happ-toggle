@@ -1,0 +1,19 @@
+{
+  "Name": "Happ Toggle",
+  "Description": "Toggle Happ VPN and test connection speed. Select a test service by key or dial; display VPN status and measured speed on Stream Deck+ and Neo.",
+  "com.llwhite.happtoggle.toggle": {
+    "Name": "Happ VPN",
+    "Tooltip": "Toggle Happ VPN and display status. Hold to test connection speed."
+  },
+  "com.llwhite.happtoggle.speed": {
+    "Name": "Speed Test",
+    "Tooltip": "Short press starts/cancels a test. Hold the key to cycle services; hold the dial to toggle VPN. Rotate to select a service, tap to toggle VPN. Neo screen displays status and results.",
+    "Encoder": {
+      "TriggerDescription": {
+        "Push": "Short press: test/cancel; hold: VPN",
+        "Rotate": "Select test service",
+        "Touch": "Toggle Happ VPN"
+      }
+    }
+  }
+}

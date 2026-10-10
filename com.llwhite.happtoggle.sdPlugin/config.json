@@ -1,0 +1,21 @@
+{
+  "deeplink": "happ://toggle_without_ui",
+  "pollMs": 3000,
+  "fastPollMs": 700,
+  "fastPollMaxMs": 12000,
+  "detect": {
+    "proxy": true,
+    "adapter": true,
+    "process": false
+  },
+  "proxyMatch": "127\\.0\\.0\\.1|localhost",
+  "adapterRegex": "happ|wintun|sing-?box|xray",
+  "processNames": [
+    "xray",
+    "sing-box"
+  ],
+  "speedServer": "https://speed.cloudflare.com",
+  "speedProxy": "auto",
+  "speedStreams": 4,
+  "longPressMs": 600
+}

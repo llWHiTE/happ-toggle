@@ -1,0 +1,71 @@
+{
+  "SDKVersion": 2,
+  "Name": "Happ Toggle",
+  "Version": "1.12.0.0",
+  "UUID": "com.llwhite.happtoggle",
+  "Author": "Alexey Storozhilov",
+  "URL": "https://github.com/llWHiTE",
+  "SupportURL": "https://github.com/llWHiTE",
+  "Description": "Переключает Happ VPN и замеряет скорость через Yandex, Cloudflare или Speedtest.net. Выбор сервиса кнопкой или крутилкой; статус и скорость на экранах Stream Deck+ и Neo.",
+  "Icon": "imgs/plugin",
+  "CodePath": "plugin.js",
+  "Nodejs": {
+    "Version": "20",
+    "Debug": "disabled"
+  },
+  "Category": "Happ Toggle",
+  "CategoryIcon": "imgs/category",
+  "OS": [
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ],
+  "Software": {
+    "MinimumVersion": "7.6"
+  },
+  "Actions": [
+    {
+      "Name": "Happ VPN",
+      "UUID": "com.llwhite.happtoggle.toggle",
+      "Icon": "imgs/action",
+      "Tooltip": "Переключить Happ VPN и показать статус. Долгое нажатие — замер скорости.",
+      "Controllers": [
+        "Keypad"
+      ],
+      "PropertyInspectorPath": "ui/pi.html",
+      "States": [
+        {
+          "Image": "imgs/key",
+          "ShowTitle": false
+        }
+      ]
+    },
+    {
+      "Name": "Замер скорости",
+      "UUID": "com.llwhite.happtoggle.speed",
+      "Icon": "imgs/action",
+      "Tooltip": "Короткое нажатие — замер/отмена; удержание кнопки — сервис, удержание крутилки — VPN. Вращение — сервис, касание — VPN. Экран Neo — статус и результат.",
+      "Controllers": [
+        "Keypad",
+        "Encoder",
+        "Neo"
+      ],
+      "Encoder": {
+        "layout": "layouts/speed.json",
+        "TriggerDescription": {
+          "Push": "Коротко — замер/отмена; удержание — VPN",
+          "Rotate": "Выбрать сервис замера",
+          "Touch": "Переключить Happ VPN"
+        }
+      },
+      "PropertyInspectorPath": "ui/pi.html",
+      "States": [
+        {
+          "Image": "imgs/key",
+          "ShowTitle": false
+        }
+      ]
+    }
+  ]
+}
