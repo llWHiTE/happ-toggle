@@ -1,16 +1,22 @@
-# Happ Toggle 1.12.0 — preview
+# Happ Toggle 1.12.0
 
 ## Changes
 
-- Adaptive download/upload layouts, icon sizes and spacing with latency on/off.
-- Wider arrow/placeholder spacing for Arial and Segoe UI before the first measurement.
-- Bahnschrift defaults for numbers and interface text; explicit choices preserved.
+- Adaptive download/upload layouts, icon sizes and spacing with screen latency on/off.
+- Wider arrow/placeholder spacing for Arial and Segoe UI; Bahnschrift defaults.
 - Connection-link screen status icon; original power icon available in settings.
 - Dial/screen-triggered VPN connection can schedule an optional delayed speed test.
-- Author Alexey Storozhilov and GitHub link in manifest/inspector.
+- Author Alexey Storozhilov and GitHub links in manifest/inspector.
 - Animations limited to 10 image updates per second.
-- White transparent sidebar artwork; original Marketplace icon, cover and four gallery images.
-- Proxy URLs omitted from diagnostics; safer errors; supported deeplink allowlist.
+- Original Marketplace icon, cover and four illustrative gallery images.
+- Proxy addresses omitted from diagnostics, safer errors and deeplink allowlist.
+- MIT open-source license, [changelog](CHANGELOG.md) and [project history](HISTORY.md).
+
+## SDK3 Marketplace update
+
+The previous package used SDKVersion 2 and a hand-written WebSocket client. Marketplace reported SDK Compatibility and DRM protection failures. The update uses SDKVersion 3 and the official `@elgato/streamdeck` 3.0.2 SDK, with a bundled ESM entry and public action APIs for keys, dials and Neo. Advanced user overrides and logs move to `%APPDATA%\HappToggle\<plugin UUID>\`, leaving distributed files unchanged.
+
+The SDK3 runtime is bundled and both namespaces pass official Elgato CLI 1.10.2 validate/pack. A local adapter smoke test also passes. The main installer contains the SDK3 update; older SDK2 assets are preserved with `-preview` names. Original code, documentation and artwork are MIT licensed. Consult `VALIDATION.json` for checks and `PUBLICATION.json` for publication state.
 
 ## Installers
 
@@ -19,8 +25,8 @@
 
 Public actions are a new installation, not an in-place migration from the old test UUID. Windows 10/11 and Stream Deck 7.6+ are required.
 
-## Verification and remaining steps
+## Verification
 
-Source/inspector syntax, JSON, artwork dimensions and local archive integrity were checked. Official Elgato CLI 1.10.2 validation and packaging passed. Real VPN/speed/device tests were not run. Marketplace submission was not performed. The owner's GitHub account is authenticated; see the release page for publication state.
+The owner reported successful manual tests of v1.12 before the SDK update. The assistant did not repeat network/device tests. The SDK adapter smoke test uses local stubs only; it is not a test of SDK registration against Stream Deck, hardware behavior or DRM. Official CLI 1.10.2 validation/packaging was repeated successfully for both new SDK3 packages. Source/inspector syntax, JSON, dependency-license inclusion, installer contents, archive integrity and checksums are verified.
 
-Gallery images are renderer-generated UI previews with illustrative measurements, not hardware captures or benchmarks. Human review, manual testing, license choice and Marketplace review remain required before stable Marketplace publication. AI assistance is disclosed.
+Briefly check key/dial/Neo behavior after installation, then upload the new public package in Maker Console. Only successful Maker Console processing can confirm SDK Compatibility and DRM protection. Marketplace approval is not claimed. Gallery images contain sample values, not hardware captures or benchmarks. AI assistance is disclosed.

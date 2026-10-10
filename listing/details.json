@@ -1,6 +1,9 @@
 {
   "name": "Happ Toggle",
   "version": "1.12.0",
+  "license": "MIT",
+  "sdkVersion": 3,
+  "nodeSDK": "@elgato/streamdeck 3.0.2",
   "author": "Alexey Storozhilov",
   "organization": "Alexey Storozhilov",
   "publicPluginUUID": "com.llwhite.happtoggle",
@@ -16,7 +19,7 @@
     "intendedRepository": "https://github.com/llWHiTE/happ-toggle",
     "intendedPrivacy": "https://github.com/llWHiTE/happ-toggle/blob/main/PRIVACY.md"
   },
-  "linkStatus": "Repository and v1.12.0 preview release published on GitHub; privacy document is included in the public source. Marketplace not submitted.",
+  "linkStatus": "Public repository exists; current stable-release publication and verified assets are recorded in PUBLICATION.json. Marketplace SDK3 acceptance is not claimed.",
   "media": {
     "icon": "../media/marketplace-icon.png",
     "cover": "../media/cover.png",
@@ -24,5 +27,6 @@
     "githubSocialPreview": "../media/github-social-preview.png"
   },
   "aiDisclosure": "Developed and prepared with AI assistance; human review and hardware testing are required before Marketplace submission.",
-  "publicationStatus": "Official CLI validation/packaging passed; GitHub repository and preview v1.12.0 release published and three assets verified. Not submitted to Marketplace."
+  "publicationStatus": "SDK3/MIT build and official CLI 1.10.2 validate/pack passed for both namespaces. Publication is recorded separately in PUBLICATION.json. Older SDK2 preview assets are preserved. Marketplace SDK/DRM acceptance not verified.",
+  "manualTests": "Owner reported successful v1.12 tests before the SDK transport update; new integration needs device verification."
 }

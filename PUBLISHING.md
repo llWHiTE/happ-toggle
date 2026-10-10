@@ -1,36 +1,43 @@
 # Publication checklist
 
-## Prepared locally
+## Prepared
 
-- Public plugin namespace `com.llwhite.happtoggle`; compatibility build retains `com.user.happtoggle`.
-- Author/organization: **Alexey Storozhilov**, matching the supplied Maker Console profile.
-- English and Russian copy in `listing/`; English Marketplace description is 250–1500 characters and begins with unformatted text.
-- Original icon **288×288 PNG**; cover and four gallery items **1920×960 PNG**; GitHub social preview **1280×640 PNG**.
-- SVG sources, native Windows renderer, source bundle, installer and checksum/validation report.
-- Privacy, security, third-party/AI disclosures and manual-test checklist.
+- Public namespace `com.llwhite.happtoggle`; compatibility build keeps `com.user.happtoggle`.
+- Author/organization: **Alexey Storozhilov**.
+- MIT license, CHANGELOG/HISTORY, privacy/security/third-party and AI disclosures.
+- SDK3 source using official `@elgato/streamdeck` 3.0.2 and a bundled-ESM build tool.
+- Original **288×288 PNG** icon, **1920×960 PNG** cover and four gallery images, **1280×640 PNG** GitHub social preview; SVG sources and native Windows artwork renderer.
+- English/Russian descriptions and suggested search terms in `listing/`.
 
-## Still required before Marketplace submission
+## Build status
 
-1. Official `streamdeck validate` and `streamdeck pack` passed using `@elgato/cli` 1.10.2. Use the official installer, not the earlier manual ZIP. Re-run validation after code changes. DRM compatibility of the custom WebSocket runtime is not claimed.
-2. Test on Windows with Happ, ordinary keys, Stream Deck+ and Neo. Check proxy/direct routes, latency layouts, missing-data placeholders, cancel, auto-test after screen tap/hold, animations, font changes and namespace install behavior.
-3. Review code and rights. Decide on a license; none was silently selected. Review test-service terms and privacy claims.
-4. Review Elgato's AI policy: disclose assistance; fully AI-created products are ineligible under the published guidelines. This preparation is not a guarantee of acceptance.
-5. Review the gallery. It contains genuine code-rendered UI previews with sample numbers, not captured hardware tests. Replace/add real screenshots when available.
-6. Upload the public installer in Maker Console with English copy, `marketplace-icon.png`, `cover.png` and at least three gallery PNGs. Four are supplied. Category/search terms are suggestions, not claims about fields offered by the console.
-7. Set privacy/support/repository links only after their pages exist. Currently confirmed links: author https://github.com/llWHiTE and Happ https://github.com/Happ-proxy/happ-desktop. The uploader targets `llWHiTE/happ-toggle`; verify its repository, releases and privacy page after upload.
-8. Never rename the public UUID after publication. Installing it alongside the old test UUID creates separate actions; reconfigure keys as needed.
+SDK3 bundling and official CLI 1.10.2 validate/pack pass for both namespaces. The release includes MIT and runtime dependency licenses. `VALIDATION.json` records local checks; `PUBLICATION.json` records the verified GitHub publication separately. Maker Console SDK/DRM acceptance remains unverified.
 
-## GitHub upload
+## Reproduce the package
 
-The user authorized creating a public `llWHiTE/happ-toggle` repository and a preview `v1.12.0` release. Account authentication passed. The upload tool verifies the resulting release and asset count; consult its output and the GitHub release page for actual publication status.
+1. Install pinned tooling and run `tools/build-plugin.cjs` for each namespace. It bundles the official SDK and generates runtime dependency notices. No npm installation is required on users' machines.
+2. Run the local adapter test, JS/inspector/JSON checks, then official `streamdeck validate` and `streamdeck pack`. Include MIT and dependency notices. Exclude logs, user configuration, development source and node_modules from the installer.
+3. Verify ZIP integrity and SHA-256; rebuild the source and publication archives without secrets or private settings. Preserve all original preview assets.
+4. The owner previously tested v1.12 functionality. Briefly recheck installation, settings, key/dial/Neo controls after this SDK-boundary change. This is a new integration, not an already hardware-tested revision.
 
-`tools/publish-github.cjs` accepts a token from `GH_TOKEN` in the process environment only. It checks the account, refuses to overwrite an existing repository, uploads only the prepared GitHub folder, and adds a prerelease installer/source/material bundle. It does not save or print a token. Use a token with the required repository permissions; revoke the token shared in chat after the task.
+## Marketplace
 
-The GitHub social-preview image must be set manually in repository Settings. The uploader does not automate that setting.
+1. Keep SDKVersion 3, the official Node SDK, immutable public UUID and minimum Stream Deck 7.6 (Neo). Never read the manifest from application code or edit distributed files at runtime. Use Stream Deck action settings and the separate user-data directory.
+2. Upload the **public** official installer in Maker Console. DRM is applied there; check **SDK Compatibility** and **DRM protection** after processing. Local validate/pack cannot prove these checks pass. Do not manually modify the protected download afterward.
+3. Use the descriptions, marketplace icon, cover and at least three gallery PNGs; four are supplied. Media are code-rendered illustrations with sample values, not hardware photographs or benchmarks.
+4. Repository: https://github.com/llWHiTE/happ-toggle ; privacy: https://github.com/llWHiTE/happ-toggle/blob/main/PRIVACY.md ; support: https://github.com/llWHiTE/happ-toggle/issues . Use the publication report to confirm the source commit and release assets.
+5. Review service terms, rights and Elgato's AI policy. AI assistance is disclosed; preparation does not guarantee eligibility or approval. No Marketplace submission is automated here.
 
-## Sources
+## Stable GitHub update
+
+The user authorized stable publication. After package verification, check the remote branch SHA/account; commit without overwriting other work. Preserve the original prerelease commit as `v1.12.0-preview`, keep old assets under preview names, and update the v1.12.0 tag/release with new packages, MIT, history and checksums. Do not rewrite main history or silently delete the previous package.
+
+Publishing tools accept `GH_TOKEN` only from the process environment. Never store or print it. Revoke the token shared in chat after publication. If it no longer authenticates, leave a complete local kit and report the remote update as blocked. GitHub social preview remains a manual repository setting.
+
+## Official references
 
 - https://docs.elgato.com/guidelines/products
 - https://docs.elgato.com/guidelines/stream-deck/plugins
 - https://docs.elgato.com/streamdeck/sdk/introduction/distribution
+- https://docs.elgato.com/streamdeck/sdk/guides/neo-infobar
 - https://docs.elgato.com/streamdeck/cli/commands/pack

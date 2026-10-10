@@ -1,6 +1,6 @@
 'use strict';
 /*
- * Happ Toggle — плагин Stream Deck без внешних зависимостей.
+ * Happ Toggle — плагин Stream Deck на официальном Node SDK Elgato.
  *  - по нажатию вызывает happ://toggle_without_ui
  *  - опрашивает состояние (системный прокси / TUN-адаптер / процессы) и рисует иконку (своя или встроенная)
  *  - замер скорости после подключения (авто / долгое нажатие / отдельная кнопка), результат показывается N секунд
@@ -11,16 +11,19 @@ const net = require('net');
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const { execFile } = require('child_process');
-const makeWS = require('./lib/ws.js');
+const createSDKAdapter = require('./lib/sdk.js');
 const { runSpeedTest } = require('./lib/speedtest.js');
 const makeWindowToggle = require('./lib/happ-window.js');
 
 const DIR = __dirname;
-const LOG = path.join(DIR, 'plugin.log');
+const DATA_DIR = path.join(process.env.APPDATA || os.homedir(), 'HappToggle', 'com.llwhite.happtoggle');
+const LOG = path.join(DATA_DIR, 'plugin.log');
 
 function log(...a) {
   try {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
     const line = `[${new Date().toISOString()}] ${a.join(' ')}\n`;
     if (fs.existsSync(LOG) && fs.statSync(LOG).size > 200 * 1024) fs.writeFileSync(LOG, '');
     fs.appendFileSync(LOG, line);
@@ -45,13 +48,18 @@ const DEFAULTS = {
 };
 
 function loadConfig() {
-  try {
-    const user = JSON.parse(fs.readFileSync(path.join(DIR, 'config.json'), 'utf8'));
-    return { ...DEFAULTS, ...user, detect: { ...DEFAULTS.detect, ...(user.detect || {}) } };
-  } catch (e) {
-    log('config error: cannot read or parse config.json; using defaults');
-    return DEFAULTS;
+  let config = { ...DEFAULTS, detect: { ...DEFAULTS.detect } };
+  for (const file of [path.join(DIR, 'config.json'), path.join(DATA_DIR, 'user-config.json')]) {
+    const name = path.basename(file);
+    if (!fs.existsSync(file)) continue;
+    try {
+      const user = JSON.parse(fs.readFileSync(file, 'utf8'));
+      config = { ...config, ...user, detect: { ...config.detect, ...(user.detect || {}) } };
+    } catch (_) {
+      log('config error: cannot read or parse', name, '; using previous defaults');
+    }
   }
+  return config;
 }
 let cfg = loadConfig();
 
@@ -153,8 +161,6 @@ if (process.argv.includes('--diag')) {
     .catch((e) => { console.error('probe failed:', e.message); process.exitCode = 1; });
   return;
 }
-
-const MiniWS = makeWS(log);
 
 // ---------------------------------------------------------------- display
 const { PROVIDERS, DEFAULT_DISPLAY, normalizeDisplay, animationMode, renderKey, renderScreen } = require('./lib/display.js');
@@ -439,7 +445,7 @@ function schedule() {
 function toggle(context) {
   if (pending) return;
   cancelActiveSpeedTest();
-  cfg = loadConfig(); // подхватываем правки config.json без перезапуска
+  cfg = loadConfig(); // подхватываем пользовательские переопределения без перезапуска
   for (const [c, info] of contexts) { cancelAutoSpeed(info); clearSpeedDisplay(c); }
   pending = { prevConnected: state === 'on', until: Date.now() + cfg.fastPollMaxMs, ctx: context };
   setState('pending');
@@ -596,9 +602,10 @@ if (!PORT || !UUID || !REGISTER) {
   process.exit(1);
 }
 
-ws = new MiniWS(PORT, {
-  onOpen: () => { log('connected to Stream Deck'); ws.sendJSON({ event: REGISTER, uuid: UUID }); },
-  onMessage,
-  onClose: () => { log('socket closed, exiting'); process.exit(0); },
+import('@elgato/streamdeck').then((sdk) => {
+  ws = createSDKAdapter(sdk, { actionIds: [ACTION_TOGGLE, ACTION_SPEED], onMessage, log });
+  return ws.connect();
+}).catch(() => {
+  log('Stream Deck SDK initialization failed');
+  process.exitCode = 1;
 });
-ws.connect();

@@ -1,0 +1,7 @@
+/plugin.js
+lib/
+node_modules/
+logs/
+*.log
+user-config.json
+*.map

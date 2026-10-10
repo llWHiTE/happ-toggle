@@ -4,4 +4,6 @@ node_modules/
 *.bin
 .env*
 dist/
+**/user-config.json
+**/logs/
 .DS_Store

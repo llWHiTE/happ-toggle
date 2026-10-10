@@ -4,21 +4,19 @@
 
 Happ VPN control and measured connection speed for **Elgato Stream Deck**, **Stream Deck+** and **Stream Deck Neo** on Windows.
 
-**Author:** [Alexey Storozhilov](https://github.com/llWHiTE). Independent integration; not affiliated with Happ, Elgato or Ookla. Developed with AI assistance.
+**Author:** [Alexey Storozhilov](https://github.com/llWHiTE). Open source under [MIT](LICENSE). Independent integration; not affiliated with Happ, Elgato or Ookla. Developed with AI assistance.
 
-> Version 1.12 is a preview. Source syntax and local packages are checked; official Elgato CLI validation and packaging passed, while real-network/device testing is still pending. Gallery measurements are illustrative UI previews, not benchmarks or hardware screenshots.
+Version **1.12.0** includes the owner's manually tested functionality. The SDK3 transport update passes local build and official CLI validation/packaging; the earlier manual-test report does not cover that integration. Consult [VALIDATION.json](VALIDATION.json) for the current SDK3 build status and [PUBLICATION.json](PUBLICATION.json) for the actual GitHub release state. Gallery values are illustrative UI previews, not benchmarks or hardware screenshots.
 
-## Requirements
+## Requirements and installation
 
 - Windows 10/11 and Stream Deck 7.6 or later.
-- [Happ](https://github.com/Happ-proxy/happ-desktop), installed separately, with `happ://toggle_without_ui` support.
-- Windows `curl.exe` and `powershell.exe`. No third-party runtime npm dependencies.
+- [Happ](https://github.com/Happ-proxy/happ-desktop), installed separately, supporting `happ://toggle_without_ui`.
+- Windows `curl.exe` and `powershell.exe`. The official Elgato Node SDK is bundled in the SDK3 installer; users do not install npm packages.
 
-## Install
+Download the installer from [GitHub Releases](https://github.com/llWHiTE/happ-toggle/releases) and double-click it. Add **Happ VPN** or **Speed Test** from **Happ Toggle** in Stream Deck. Use `com.llwhite.happtoggle.streamDeckPlugin` for the SDK3 public build. Files with `-preview` in their names preserve the older SDK2 build and do not contain the Marketplace compatibility update.
 
-Download the installer from the [v1.12.0 preview release](https://github.com/llWHiTE/happ-toggle/releases/tag/v1.12.0) and double-click it. See [PUBLICATION.json](PUBLICATION.json) for the verified repository, release assets and validation status. Add **Happ VPN** or **Speed Test** from **Happ Toggle** in Stream Deck.
-
-The public plugin uses `com.llwhite.happtoggle`. Earlier private/test builds used `com.user.happtoggle`: they are different plugins, so public-install actions must be added/configured again. The compatibility installer keeps the old identifier. Do not change the public identifier after publication.
+The public plugin uses `com.llwhite.happtoggle`. Earlier private/test builds used `com.user.happtoggle`: they are separate plugins, so add/configure public actions again. The compatibility installer preserves the old identifier. Do not change the public identifier after publication.
 
 For Stream Deck+, place **Speed Test** on a dial. For Neo, place it on **Infobar** and on a regular key; Infobar is display-only and follows tests on the same device.
 
@@ -38,30 +36,38 @@ Enable **Test speed after connecting** on the VPN key or dial and choose the del
 
 ## Display
 
-- Download/upload values update as measurements arrive; optional HTTP latency on the screens.
-- Latency enabled/disabled uses different number/icon sizes and placement.
-- Bahnschrift by default; other explicit font choices remain available.
-- Screen status: connection links by default; original power symbol selectable.
-- Combined or large-by-phase layout; Mbps/MB/s and optional unit labels.
-- Hidden service names, transparent screen fill, independent idle/test animation switches.
-- Key results can be held **until the next test**. Screen results remain until replaced or invalidated by a connection/service change.
+- Download/upload values update as measurements arrive; optional HTTP latency on screens.
+- Latency enabled/disabled changes number/icon sizes and placement.
+- Bahnschrift by default; other explicit font choices available.
+- Connection-link screen status icon; former power symbol selectable.
+- Combined or large-by-phase layout; Mbps/MB/s and optional units.
+- Hidden service names, transparent screen fill, independent idle/test animations.
+- Key results can be kept **until the next test**. Screen results remain until replaced or invalidated by a connection/service change.
 
-These are **test services**, not Happ VPN servers. This is a connection test, **not live traffic monitoring**. Delay is HTTP latency after connection setup, **not ICMP ping**. The unofficial Speedtest.net endpoint method is not Ookla's official engine; results need not match a browser. Tests can consume substantial data.
+These are **test services**, not Happ VPN servers. This is a connection test, **not live traffic monitoring**. Latency is HTTP latency after connection setup, **not ICMP ping**. The unofficial Speedtest.net endpoint method is not Ookla's engine; results need not match a browser. Tests can consume substantial data.
 
-## Privacy and support
+## Configuration, privacy and support
 
-See [PRIVACY.md](PRIVACY.md), [SECURITY.md](SECURITY.md) and [third-party notes](THIRD_PARTY_NOTICES.md). No publisher telemetry is implemented. Local proxy/adapter/process status inspection and third-party test traffic are described there.
+Normal settings are stored by Stream Deck. For advanced overrides, create `%APPDATA%\HappToggle\com.llwhite.happtoggle\user-config.json`; copy only the settings you need from the shipped `config.json`. Logs are written to that user-data directory. Do not modify distributed files: Marketplace DRM requires them to remain unchanged. The compatibility build uses its own `com.user.happtoggle` user-data directory.
 
-Support: [author's GitHub profile](https://github.com/llWHiTE). Review diagnostics before sharing; never include credentials, tokens or private proxy configuration.
+See [PRIVACY.md](PRIVACY.md), [SECURITY.md](SECURITY.md) and [third-party notices](THIRD_PARTY_NOTICES.md). No publisher telemetry is implemented. Review diagnostics before sharing; never include tokens, credentials or private proxy configuration.
+
+Support: [GitHub issues](https://github.com/llWHiTE/happ-toggle/issues). No private reporting channel or response-time commitment is established.
 
 ## Source and packaging
 
-The plugin is in `com.llwhite.happtoggle.sdPlugin/`. Artwork sources are in `media/`; generators are in `tools/`. Native Windows artwork rendering does not require downloaded graphics libraries.
-
-Official validation and packaging, once tool execution is permitted:
+Source is in `com.llwhite.happtoggle.sdPlugin/`; artwork and build tools are in `media/` and `tools/`. The build emits bundled ESM at `bin/plugin.js`, with a type-module marker and dependency license notices. The CommonJS core is retained as source; the old custom WebSocket is not part of the installed runtime.
 
 ```bash
 npm --prefix tools ci --ignore-scripts
+```
+
+```bash
+node tools/build-plugin.cjs com.llwhite.happtoggle.sdPlugin
+```
+
+```bash
+node tools/test-sdk.cjs com.llwhite.happtoggle.sdPlugin
 ```
 
 ```bash
@@ -72,12 +78,14 @@ npm --prefix tools ci --ignore-scripts
 ./tools/node_modules/.bin/streamdeck pack com.llwhite.happtoggle.sdPlugin --output dist
 ```
 
-Do not enable DRM without verifying support for this hand-written WebSocket runtime. See [release notes](RELEASE_NOTES.md) and [publication checklist](PUBLISHING.md) for validation status, Marketplace media requirements and remaining decisions.
+Official local validation is not Marketplace approval. DRM is applied during Maker Console processing; its SDK Compatibility and DRM checks must be confirmed there. See [release notes](RELEASE_NOTES.md) and [publication checklist](PUBLISHING.md).
 
-## License
+## License and history
 
-No open-source license has been selected by the owner yet. Public availability is not a grant of an open-source license. Choose/add a license before describing this project as open source.
+[MIT License](LICENSE), Copyright (c) 2026 Alexey Storozhilov. Original project code, documentation and artwork are covered; dependency licenses, trademarks and Windows fonts retain their own terms.
+
+[CHANGELOG.md](CHANGELOG.md) records retained builds; [HISTORY.md](HISTORY.md) explains the project's development. Early local-build history is reconstructed, not presented as invented GitHub commits.
 
 ## Русский
 
-Happ Toggle переключает Happ VPN и замеряет загрузку, отдачу и HTTP-задержку. Крутилка поддерживает выбор сервиса, короткий запуск/отмену теста и удержание для VPN; касание экрана также переключает VPN. Автозамер включается в настройках VPN-кнопки или крутилки. Экран Neo показывает тесты кнопки того же устройства. Требуются Windows 10/11, Stream Deck 7.6+ и установленный Happ. Публичная копия имеет новый UUID и требует заново добавить действия прежних тестовых сборок.
+Happ Toggle переключает Happ VPN и замеряет загрузку, отдачу и HTTP-задержку. Крутилка выбирает сервис; короткое нажатие запускает/отменяет тест, удержание и касание экрана переключают VPN. Автозамер настраивается для VPN-кнопки или крутилки. Neo отображает тесты того же устройства. Требуются Windows 10/11, Stream Deck 7.6+ и Happ. Проект открыт под MIT; история — в CHANGELOG/HISTORY. SDK3-сборка и официальная CLI-проверка/упаковка пройдены; новый основной установщик включает исправление совместимости. Прежние SDK2-вложения сохраняются с пометкой preview. После установки кратко проверьте управление на устройстве; проверки SDK Compatibility и DRM protection окончательно подтверждаются в Maker Console.

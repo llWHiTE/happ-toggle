@@ -1,5 +1,5 @@
 {
-  "SDKVersion": 2,
+  "SDKVersion": 3,
   "Name": "Happ Toggle",
   "Version": "1.12.0.0",
   "UUID": "com.llwhite.happtoggle",
@@ -8,7 +8,7 @@
   "SupportURL": "https://github.com/llWHiTE",
   "Description": "Переключает Happ VPN и замеряет скорость через Yandex, Cloudflare или Speedtest.net. Выбор сервиса кнопкой или крутилкой; статус и скорость на экранах Stream Deck+ и Neo.",
   "Icon": "imgs/plugin",
-  "CodePath": "plugin.js",
+  "CodePath": "bin/plugin.js",
   "Nodejs": {
     "Version": "20",
     "Debug": "disabled"

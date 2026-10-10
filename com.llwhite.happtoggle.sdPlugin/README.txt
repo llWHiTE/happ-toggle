@@ -1,5 +1,5 @@
 Happ Toggle 1.12 — плагин Stream Deck (Windows 10/11, Stream Deck 7.6+)
-Пакет: com.llwhite.happtoggle-1.12.streamDeckPlugin
+Пакет: com.llwhite.happtoggle.streamDeckPlugin
 Автор: Alexey Storozhilov — https://github.com/llWHiTE
 
 НОВОЕ В 1.12
@@ -12,11 +12,17 @@ Happ Toggle 1.12 — плагин Stream Deck (Windows 10/11, Stream Deck 7.6+)
   Частота анимаций ограничена 10 кадрами/с; плавный цикл остаётся 6 секунд.
   Подготовлена отдельная публичная копия com.llwhite.happtoggle. Её установка
   создаёт новые действия: существующие кнопки старой тестовой копии не мигрируют.
-  Официальная CLI-валидация и загрузка GitHub могут требовать отдельного разрешения.
-  Разработка и медиа подготовлены с AI assistance; аппаратная проверка за владельцем.
+  MIT License: Copyright (c) 2026 Alexey Storozhilov. История — CHANGELOG/HISTORY.
+  Исходники обновления переведены на SDKVersion 3 и официальный Node SDK Elgato.
+  SDK собирается в bin/plugin.js; приложение использует ESM entry.
+  SDK3-сборка и официальная CLI-валидация/упаковка пройдены для обоих UUID.
+  Публичный пакет предназначен для повторной загрузки и проверки в Maker Console.
+  Пользователь сообщил об успешных тестах v1.12 до миграции транспорта.
+  Новая SDK-интеграция требует короткой проверки кнопок/крутилки/Neo на устройстве.
+  Разработка и медиа подготовлены с AI assistance; DRM проверяет Maker Console.
 
 УСТАНОВКА
-  Дважды щёлкните по com.llwhite.happtoggle-1.12.streamDeckPlugin.
+  Дважды щёлкните по com.llwhite.happtoggle.streamDeckPlugin.
   UUID действий не менялись, настройки существующих кнопок сохраняются.
   Happ → Happ VPN / Замер скорости (Speed Test в английском интерфейсе).
   Для Stream Deck+ перетащите «Замер скорости» на место крутилки.
@@ -30,7 +36,7 @@ Happ Toggle 1.12 — плагин Stream Deck (Windows 10/11, Stream Deck 7.6+)
   Замер скорости: короткое нажатие запускает тест при отпускании; повторное
   нажатие во время теста отменяет его сразу. Удержание свободной кнопки
   переключает сервис: Yandex → Cloudflare → Speedtest.net → Yandex.
-  Порог удержания по умолчанию 0.6 с (longPressMs в config.json).
+  Порог удержания по умолчанию 0.6 с (longPressMs в user-config.json).
   В ожидании на кнопке скорости видно название выбранного сервиса.
 
 STREAM DECK+
@@ -145,10 +151,15 @@ STREAM DECK NEO
   потому что Windows/сам Happ обрабатывают deeplink раньше восстановления.
 
 ДИАГНОСТИКА
-  config.json: speedProxy («auto», «» или URL), speedServer (Cloudflare),
-  speedStreams, признаки VPN и longPressMs. Ошибки — plugin.log.
-  При наличии отдельного Node.js: node plugin.js --diag;
-  node plugin.js --speed 3 --provider yandex (cloudflare/speedtest — альтернативы).
+  Поставляемый config.json неизменяем. Для своих настроек создайте
+  %APPDATA%\HappToggle\com.llwhite.happtoggle\user-config.json — обычный JSON
+  с нужными переопределениями: speedProxy («auto», «» или URL), speedServer
+  (Cloudflare), speedStreams, признаки VPN и longPressMs. Лог plugin.log
+  хранится в той же пользовательской папке. Не включайте её в публикацию.
+  Не меняйте файлы защищённого Marketplace-плагина; старые ручные настройки
+  config.json перенесите в отдельный user-config.json до обновления.
+  При наличии Node.js и собранного SDK: node bin/plugin.js --diag;
+  node bin/plugin.js --speed 3 --provider yandex (cloudflare/speedtest — альтернативы).
 
 ПРОВЕРКА НА УСТРОЙСТВЕ
   Кнопка скорости: короткий запуск, отмена повторным нажатием, удержание для

@@ -1,8 +1,13 @@
 {
   "version": "1.12.0",
+  "sdkVersion": 3,
+  "nodeSDK": "@elgato/streamdeck 3.0.2",
+  "license": "MIT",
   "syntax": "passed",
   "json": "passed",
-  "descriptionCharacters": 1074,
+  "propertyInspectorSyntax": "passed",
+  "credentialScan": "passed",
+  "descriptionCharacters": 1132,
   "artwork": [
     {
       "file": "cover.png",
@@ -50,7 +55,21 @@
       "height": 512
     }
   ],
+  "adapterSmokeTest": "passed: local stubs only",
+  "sdkBundle": "passed: official @elgato/streamdeck 3.0.2, bundled ESM",
   "officialElgatoCLI": {
+    "status": "passed",
+    "version": "1.10.2",
+    "commands": [
+      "validate",
+      "pack"
+    ],
+    "namespaces": [
+      "com.user.happtoggle",
+      "com.llwhite.happtoggle"
+    ]
+  },
+  "previousSDK2Validation": {
     "status": "passed",
     "version": "1.10.2",
     "commands": [
@@ -59,9 +78,9 @@
     ],
     "namespace": "com.llwhite.happtoggle"
   },
-  "githubUpload": "Authenticated llWHiTE; publication state is recorded separately after upload.",
-  "hardwareAndNetworkTests": "not run",
-  "drm": "Officially packaged SDK2/raw WebSocket plugin; DRM not asserted or independently tested.",
+  "hardwareAndNetworkTests": "Owner reported successful v1.12 tests before SDK migration; SDK3 device testing pending. Assistant did not run these tests.",
+  "drm": "SDK3/official Node SDK prerequisites met; Maker Console acceptance/protection remains unverified.",
+  "githubUpload": "SDK3 packages verified locally; GitHub stable update pending.",
   "namespaces": [
     "com.user.happtoggle",
     "com.llwhite.happtoggle"

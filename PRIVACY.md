@@ -12,7 +12,7 @@ VPN detection reads Windows proxy enable/server settings, active network-adapter
 
 Action settings and cropped 144×144 PNG custom icons are stored through Stream Deck over the local WebSocket connection. Source images are read locally, not uploaded by the plugin. Stream Deck profile export/sync behavior is outside this plugin's implementation.
 
-`config.json` stores configuration locally. A manually entered proxy URL can contain credentials in plaintext, and curl receives proxy configuration as process arguments. Do not put credentials in distributed config files or support reports. Diagnostic commands omit proxy URLs, but adapter/process names should still be reviewed before sharing.
+The shipped `config.json` supplies immutable defaults. In the SDK3 update, optional `user-config.json` overrides and `plugin.log` are stored in `%APPDATA%\HappToggle\<plugin UUID>\`, separate from distributed files. Action settings remain in Stream Deck. The official SDK handles local Stream Deck communication; Marketplace installation/licensing is managed by Stream Deck, not a publisher account system. A manually entered proxy URL can contain credentials in plaintext, and curl receives proxy configuration as process arguments. Do not put credentials in distributed config files or support reports. Diagnostic commands omit proxy URLs, but adapter/process names should still be reviewed before sharing.
 
 `plugin.log` records timestamps, operations/errors and speed results/server identity locally. It is cleared before a subsequent append when its existing size exceeds 200 KiB; there is no fixed time-retention policy. Deleting the log is a local user action, not a remote deletion service.
 

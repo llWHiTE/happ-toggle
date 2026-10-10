@@ -9,6 +9,7 @@ Contact [Alexey Storozhilov](https://github.com/llWHiTE) before sharing sensitiv
 - Config files, custom proxy endpoints and imported Stream Deck settings are local trust inputs. Do not import untrusted configuration.
 - Proxy credentials may be stored in plaintext and visible to local process inspection.
 - Normal diagnostics omit proxy URLs; adapter/process names and external endpoint errors can still be sensitive. Review logs before sharing.
-- No publisher telemetry, official Ookla binary, external runtime npm dependency or custom certificate bypass is bundled.
+- No publisher telemetry, official Ookla binary or custom certificate bypass is bundled. The SDK3 runtime includes the official Elgato Node SDK and bundled dependencies; retain their license notices.
+- Do not modify distributed files in a DRM-protected installation. Advanced overrides and logs belong in the separate user-data directory.
 
-The current release is a preview. Syntax/archive checks are not a security audit, an Elgato certification or a substitute for manual network/device testing. No warranty or security certification is claimed.
+Original project code is MIT licensed. The owner reported successful manual tests before the SDK migration; the new integration still requires build/device verification. Syntax, smoke-test and archive checks are not a security audit or Elgato certification. No warranty or security certification is claimed.
