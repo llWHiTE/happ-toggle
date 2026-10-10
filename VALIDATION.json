@@ -80,7 +80,7 @@
   },
   "hardwareAndNetworkTests": "Owner reported successful v1.12 tests before SDK migration; SDK3 device testing pending. Assistant did not run these tests.",
   "drm": "SDK3/official Node SDK prerequisites met; Maker Console acceptance/protection remains unverified.",
-  "githubUpload": "SDK3 packages verified locally; GitHub stable update pending.",
+  "githubUpload": "SDK3/MIT stable release published; see PUBLICATION.json.",
   "namespaces": [
     "com.user.happtoggle",
     "com.llwhite.happtoggle"

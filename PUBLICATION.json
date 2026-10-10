@@ -3,34 +3,70 @@
   "status": "published",
   "repository": "https://github.com/llWHiTE/happ-toggle",
   "release": "https://github.com/llWHiTE/happ-toggle/releases/tag/v1.12.0",
-  "prerelease": true,
+  "prerelease": false,
   "draft": false,
-  "sourceCommit": "16128607d54aee1caaf79a62d63d6c6ae538a19b",
-  "officialValidation": "SDK3: Elgato CLI 1.10.2 validate/pack passed for both namespaces.",
-  "marketplaceSubmission": "not performed",
+  "sourceCommit": "c22f28d710e013452c1986ea96e832559f7ba58a",
+  "previewTag": "v1.12.0-preview",
+  "previewSourceCommit": "16128607d54aee1caaf79a62d63d6c6ae538a19b",
+  "officialValidation": "SDK3 build and Elgato CLI 1.10.2 validate/pack passed for both namespaces.",
+  "marketplaceSubmission": "Owner reported SDK2 upload rejected; SDK3 package not submitted by this session. Maker Console SDK/DRM acceptance unverified.",
   "hardwareAndNetworkTests": "Owner reported successful v1.12 tests before SDK migration; SDK3 device testing pending. Assistant did not run these tests.",
+  "localUpdate": {
+    "license": "MIT",
+    "sdkVersion": 3,
+    "status": "published",
+    "stableRelease": "published",
+    "existingAssets": "Original SDK2 assets preserved by ID under preview names."
+  },
   "assets": [
     {
       "name": "com.llwhite.happtoggle.streamDeckPlugin",
-      "size": 69998,
       "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.0/com.llwhite.happtoggle.streamDeckPlugin"
     },
     {
+      "name": "com.user.happtoggle-1.12.streamDeckPlugin",
+      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.0/com.user.happtoggle-1.12.streamDeckPlugin"
+    },
+    {
       "name": "happ-toggle-github-source-1.12.zip",
-      "size": 664914,
       "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.0/happ-toggle-github-source-1.12.zip"
     },
     {
       "name": "happ-toggle-publication-kit-1.12.zip",
-      "size": 1308460,
       "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.0/happ-toggle-publication-kit-1.12.zip"
+    },
+    {
+      "name": "LICENSE",
+      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.0/LICENSE"
+    },
+    {
+      "name": "CHANGELOG.md",
+      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.0/CHANGELOG.md"
+    },
+    {
+      "name": "HISTORY.md",
+      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.0/HISTORY.md"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.0/SHA256SUMS.txt"
     }
   ],
-  "localUpdate": {
-    "license": "MIT",
-    "sdkVersion": 3,
-    "status": "packages verified locally; GitHub update pending",
-    "stableRelease": "not converted",
-    "existingAssets": "unchanged remotely"
-  }
+  "previewAssets": [
+    {
+      "id": 628037013,
+      "name": "com.llwhite.happtoggle-preview.streamDeckPlugin",
+      "size": 69998
+    },
+    {
+      "id": 628037036,
+      "name": "happ-toggle-github-source-1.12-preview.zip",
+      "size": 664914
+    },
+    {
+      "id": 628037057,
+      "name": "happ-toggle-publication-kit-1.12-preview.zip",
+      "size": 1308460
+    }
+  ]
 }
