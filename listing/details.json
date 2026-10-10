@@ -16,7 +16,7 @@
     "intendedRepository": "https://github.com/llWHiTE/happ-toggle",
     "intendedPrivacy": "https://github.com/llWHiTE/happ-toggle/blob/main/PRIVACY.md"
   },
-  "linkStatus": "Repository/privacy links are intended targets, not confirmed published links. Author and Happ URLs are public links.",
+  "linkStatus": "Repository and v1.12.0 preview release published on GitHub; privacy document is included in the public source. Marketplace not submitted.",
   "media": {
     "icon": "../media/marketplace-icon.png",
     "cover": "../media/cover.png",
@@ -24,5 +24,5 @@
     "githubSocialPreview": "../media/github-social-preview.png"
   },
   "aiDisclosure": "Developed and prepared with AI assistance; human review and hardware testing are required before Marketplace submission.",
-  "publicationStatus": "Official CLI validation/packaging passed; authenticated GitHub upload pending verification. Not submitted to Marketplace."
+  "publicationStatus": "Official CLI validation/packaging passed; GitHub repository and preview v1.12.0 release published and three assets verified. Not submitted to Marketplace."
 }

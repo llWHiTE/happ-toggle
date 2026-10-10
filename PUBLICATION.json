@@ -1,0 +1,17 @@
+{
+  "version": "1.12.0",
+  "status": "published",
+  "repository": "https://github.com/llWHiTE/happ-toggle",
+  "release": "https://github.com/llWHiTE/happ-toggle/releases/tag/v1.12.0",
+  "prerelease": true,
+  "draft": false,
+  "sourceCommit": "16128607d54aee1caaf79a62d63d6c6ae538a19b",
+  "officialValidation": "Elgato CLI 1.10.2 validate and pack passed",
+  "marketplaceSubmission": "not performed",
+  "hardwareAndNetworkTests": "not performed",
+  "assets": [
+    { "name": "com.llwhite.happtoggle.streamDeckPlugin", "size": 69998, "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.0/com.llwhite.happtoggle.streamDeckPlugin" },
+    { "name": "happ-toggle-github-source-1.12.zip", "size": 664914, "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.0/happ-toggle-github-source-1.12.zip" },
+    { "name": "happ-toggle-publication-kit-1.12.zip", "size": 1308460, "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.0/happ-toggle-publication-kit-1.12.zip" }
+  ]
+}

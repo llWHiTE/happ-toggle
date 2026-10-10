@@ -16,7 +16,7 @@ Happ VPN control and measured connection speed for **Elgato Stream Deck**, **Str
 
 ## Install
 
-Use the `.streamDeckPlugin` installer supplied with the release and double-click it. Add **Happ VPN** or **Speed Test** from **Happ Toggle** in Stream Deck.
+Download the installer from the [v1.12.0 preview release](https://github.com/llWHiTE/happ-toggle/releases/tag/v1.12.0) and double-click it. See [PUBLICATION.json](PUBLICATION.json) for the verified repository, release assets and validation status. Add **Happ VPN** or **Speed Test** from **Happ Toggle** in Stream Deck.
 
 The public plugin uses `com.llwhite.happtoggle`. Earlier private/test builds used `com.user.happtoggle`: they are different plugins, so public-install actions must be added/configured again. The compatibility installer keeps the old identifier. Do not change the public identifier after publication.
 
