@@ -4,10 +4,6 @@
 
 Happ VPN control and measured connection speed for **Elgato Stream Deck**, **Stream Deck+** and **Stream Deck Neo** on Windows.
 
-**Author:** [Alexey Storozhilov](https://github.com/llWHiTE). Open source under [MIT](LICENSE). Independent integration; not affiliated with Happ, Elgato or Ookla. Developed with AI assistance.
-
-Version **1.12.0** includes the owner's manually tested functionality. The SDK3 transport update passes local build and official CLI validation/packaging; the earlier manual-test report does not cover that integration. Consult [VALIDATION.json](VALIDATION.json) for the current SDK3 build status and [PUBLICATION.json](PUBLICATION.json) for the actual GitHub release state. Gallery values are illustrative UI previews, not benchmarks or hardware screenshots.
-
 ## Requirements and installation
 
 - Windows 10/11 and Stream Deck 7.6 or later.
@@ -15,8 +11,6 @@ Version **1.12.0** includes the owner's manually tested functionality. The SDK3 
 - Windows `curl.exe` and `powershell.exe`. The official Elgato Node SDK is bundled in the SDK3 installer; users do not install npm packages.
 
 Download the installer from [GitHub Releases](https://github.com/llWHiTE/happ-toggle/releases) and double-click it. Add **Happ VPN** or **Speed Test** from **Happ Toggle** in Stream Deck. Use `com.llwhite.happtoggle.streamDeckPlugin` for the SDK3 public build. Files with `-preview` in their names preserve the older SDK2 build and do not contain the Marketplace compatibility update.
-
-The public plugin uses `com.llwhite.happtoggle`. Earlier private/test builds used `com.user.happtoggle`: they are separate plugins, so add/configure public actions again. The compatibility installer preserves the old identifier. Do not change the public identifier after publication.
 
 For Stream Deck+, place **Speed Test** on a dial. For Neo, place it on **Infobar** and on a regular key; Infobar is display-only and follows tests on the same device.
 
@@ -52,34 +46,6 @@ Normal settings are stored by Stream Deck. For advanced overrides, create `%APPD
 
 See [PRIVACY.md](PRIVACY.md), [SECURITY.md](SECURITY.md) and [third-party notices](THIRD_PARTY_NOTICES.md). No publisher telemetry is implemented. Review diagnostics before sharing; never include tokens, credentials or private proxy configuration.
 
-Support: [GitHub issues](https://github.com/llWHiTE/happ-toggle/issues). No private reporting channel or response-time commitment is established.
-
-## Source and packaging
-
-Source is in `com.llwhite.happtoggle.sdPlugin/`; artwork and build tools are in `media/` and `tools/`. The build emits bundled ESM at `bin/plugin.js`, with a type-module marker and dependency license notices. The CommonJS core is retained as source; the old custom WebSocket is not part of the installed runtime.
-
-```bash
-npm --prefix tools ci --ignore-scripts
-```
-
-```bash
-node tools/build-plugin.cjs com.llwhite.happtoggle.sdPlugin
-```
-
-```bash
-node tools/test-sdk.cjs com.llwhite.happtoggle.sdPlugin
-```
-
-```bash
-./tools/node_modules/.bin/streamdeck validate com.llwhite.happtoggle.sdPlugin
-```
-
-```bash
-./tools/node_modules/.bin/streamdeck pack com.llwhite.happtoggle.sdPlugin --output dist
-```
-
-Official local validation is not Marketplace approval. DRM is applied during Maker Console processing; its SDK Compatibility and DRM checks must be confirmed there. See [release notes](RELEASE_NOTES.md) and [publication checklist](PUBLISHING.md).
-
 ## License and history
 
 [MIT License](LICENSE), Copyright (c) 2026 Alexey Storozhilov. Original project code, documentation and artwork are covered; dependency licenses, trademarks and Windows fonts retain their own terms.
@@ -88,4 +54,4 @@ Official local validation is not Marketplace approval. DRM is applied during Mak
 
 ## Русский
 
-Happ Toggle переключает Happ VPN и замеряет загрузку, отдачу и HTTP-задержку. Крутилка выбирает сервис; короткое нажатие запускает/отменяет тест, удержание и касание экрана переключают VPN. Автозамер настраивается для VPN-кнопки или крутилки. Neo отображает тесты того же устройства. Требуются Windows 10/11, Stream Deck 7.6+ и Happ. Проект открыт под MIT; история — в CHANGELOG/HISTORY. SDK3-сборка и официальная CLI-проверка/упаковка пройдены; новый основной установщик включает исправление совместимости. Прежние SDK2-вложения сохраняются с пометкой preview. После установки кратко проверьте управление на устройстве; проверки SDK Compatibility и DRM protection окончательно подтверждаются в Maker Console.
+Happ Toggle переключает Happ VPN и замеряет загрузку, отдачу и HTTP-задержку. Крутилка выбирает сервис; короткое нажатие запускает/отменяет тест, удержание и касание экрана переключают VPN. Автозамер настраивается для VPN-кнопки или крутилки. Neo отображает тесты того же устройства. Требуются Windows 10/11, Stream Deck 7.6+ и Happ. Проект открыт под MIT; история — в CHANGELOG/HISTORY. SDK3-сборка и официальная CLI-проверка/упаковка пройдены; новый основной установщик включает исправление совместимости. Прежние SDK2-вложения сохраняются с пометкой preview. 
