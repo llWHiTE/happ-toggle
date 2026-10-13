@@ -81,7 +81,7 @@
   },
   "hardwareAndNetworkTests": "No VPN switching, network speed tests or hardware tests performed for this update.",
   "drm": "Previous SDK3 Maker Console processing displayed DRM enabled; new package acceptance and product approval are unverified.",
-  "githubUpload": "Verified locally; GitHub update pending.",
+  "githubUpload": "Published; see PUBLICATION.json.",
   "namespaces": [
     "com.user.happtoggle",
     "com.llwhite.happtoggle"

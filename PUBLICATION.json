@@ -1,16 +1,57 @@
 {
   "version": "1.12.1",
-  "status": "pending",
+  "status": "published",
   "repository": "https://github.com/llWHiTE/happ-toggle",
   "release": "https://github.com/llWHiTE/happ-toggle/releases/tag/v1.12.1",
   "marketplaceSubmission": "Previous SDK3 processing showed SDK compatibility and DRM enabled; product review requested built-in localization. Updated package not submitted by this session.",
-  "hardwareAndNetworkTests": "Owner reported successful v1.12 tests before SDK migration; SDK3 device testing pending. Assistant did not run these tests.",
+  "hardwareAndNetworkTests": "No VPN switching, speed tests or hardware tests performed for this update.",
   "localUpdate": {
     "license": "MIT",
     "sdkVersion": 3,
-    "status": "packages verified locally; GitHub update pending",
-    "stableRelease": "not converted",
-    "existingAssets": "unchanged remotely"
+    "status": "published",
+    "stableRelease": "v1.12.1",
+    "existingAssets": "Old releases, tags and assets left unchanged."
   },
-  "officialValidation": "SDK3: Elgato CLI 1.10.2 validate/pack passed for both namespaces."
+  "officialValidation": "SDK3 build, official Elgato CLI 1.10.2 validate/pack and localization tests passed for both UUIDs.",
+  "sourceCommit": "84f7419f212964bcf57faf112fe9cbeb3ecdf1d1",
+  "prerelease": false,
+  "draft": false,
+  "documentationPreserved": {
+    "readmeBlobSHA": "4e072a3e679d359f6d289745bd9e04d8876377fe",
+    "description": "Happ VPN control and measured speed for Stream Deck keys, dials and Neo Infobar on Windows."
+  },
+  "assets": [
+    {
+      "name": "com.llwhite.happtoggle.streamDeckPlugin",
+      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.1/com.llwhite.happtoggle.streamDeckPlugin"
+    },
+    {
+      "name": "com.user.happtoggle-1.12.1.streamDeckPlugin",
+      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.1/com.user.happtoggle-1.12.1.streamDeckPlugin"
+    },
+    {
+      "name": "happ-toggle-github-source-1.12.1.zip",
+      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.1/happ-toggle-github-source-1.12.1.zip"
+    },
+    {
+      "name": "happ-toggle-publication-kit-1.12.1.zip",
+      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.1/happ-toggle-publication-kit-1.12.1.zip"
+    },
+    {
+      "name": "LICENSE",
+      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.1/LICENSE"
+    },
+    {
+      "name": "CHANGELOG.md",
+      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.1/CHANGELOG.md"
+    },
+    {
+      "name": "HISTORY.md",
+      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.1/HISTORY.md"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.1/SHA256SUMS.txt"
+    }
+  ]
 }
