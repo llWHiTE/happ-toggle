@@ -1,32 +1,26 @@
-# Happ Toggle 1.12.0
+# Happ Toggle 1.12.1
 
-## Changes
+## Built-in Stream Deck localization
 
-- Adaptive download/upload layouts, icon sizes and spacing with screen latency on/off.
-- Wider arrow/placeholder spacing for Arial and Segoe UI; Bahnschrift defaults.
-- Connection-link screen status icon; original power icon available in settings.
-- Dial/screen-triggered VPN connection can schedule an optional delayed speed test.
-- Author Alexey Storozhilov and GitHub links in manifest/inspector.
-- Animations limited to 10 image updates per second.
-- Original Marketplace icon, cover and four illustrative gallery images.
-- Proxy addresses omitted from diagnostics, safer errors and deeplink allowlist.
-- MIT open-source license, [changelog](CHANGELOG.md) and [project history](HISTORY.md).
+- Plugin/action metadata, property inspector labels/help/errors and rendered speed units now use root locale resources (`en.json`, `ru.json`, custom strings under `Localization`).
+- Runtime text uses the official `streamDeck.i18n.translate()` API. The property inspector follows `info.application.language` and reads the same locale resources, with English fallback.
+- Removed the per-action language selector and embedded translation dictionaries. Previous language overrides are ignored; saved icons, test service, appearance and timing settings are retained.
+- Retained SDKVersion 3, the official Elgato Node SDK, existing UUIDs and key/dial/Neo functionality.
 
-## SDK3 Marketplace update
+English is the fallback for languages without a supplied translation. Russian resources are retained for an application locale of `ru`; Russian is not currently listed as an official Stream Deck UI language.
 
-The previous package used SDKVersion 2 and a hand-written WebSocket client. Marketplace reported SDK Compatibility and DRM protection failures. The update uses SDKVersion 3 and the official `@elgato/streamdeck` 3.0.2 SDK, with a bundled ESM entry and public action APIs for keys, dials and Neo. Advanced user overrides and logs move to `%APPDATA%\HappToggle\<plugin UUID>\`, leaving distributed files unchanged.
+## Installation
 
-The SDK3 runtime is bundled and both namespaces pass official Elgato CLI 1.10.2 validate/pack. A local adapter smoke test also passes. The main installer contains the SDK3 update; older SDK2 assets are preserved with `-preview` names. Original code, documentation and artwork are MIT licensed. Consult `VALIDATION.json` for checks and `PUBLICATION.json` for publication state.
+- Public package: `com.llwhite.happtoggle.streamDeckPlugin`.
+- Compatibility package for the earlier test UUID: `com.user.happtoggle-1.12.1.streamDeckPlugin`.
+- Requirements remain Windows 10/11, Stream Deck 7.6+ and Happ installed separately.
 
-## Installers
+The 1.12.0 release remains unchanged. The repository README and description edited by the owner are preserved.
 
-- Public namespace: `com.llwhite.happtoggle.streamDeckPlugin`.
-- Compatibility namespace: `com.user.happtoggle-1.12.streamDeckPlugin`, for earlier test keys.
+## Verification and Marketplace
 
-Public actions are a new installation, not an in-place migration from the old test UUID. Windows 10/11 and Stream Deck 7.6+ are required.
+Official SDK localization tests, inspector fallback/settings tests and adapter smoke tests passed. Both installers passed official Elgato CLI 1.10.2 validation and packaging; archive contents, CRC and SHA-256 are verified. No VPN switching, network speed tests or hardware tests were performed by the assistant for this update.
 
-## Verification
+This update addresses Elgato's localization review feedback. The previous Maker Console summary displayed SDK3 compatibility and DRM enabled; approval of this resubmission is not claimed. Upload the new public installer and briefly check the settings and controls on your device.
 
-The owner reported successful manual tests of v1.12 before the SDK update. The assistant did not repeat network/device tests. The SDK adapter smoke test uses local stubs only; it is not a test of SDK registration against Stream Deck, hardware behavior or DRM. Official CLI 1.10.2 validation/packaging was repeated successfully for both new SDK3 packages. Source/inspector syntax, JSON, dependency-license inclusion, installer contents, archive integrity and checksums are verified.
-
-Briefly check key/dial/Neo behavior after installation, then upload the new public package in Maker Console. Only successful Maker Console processing can confirm SDK Compatibility and DRM protection. Marketplace approval is not claimed. Gallery images contain sample values, not hardware captures or benchmarks. AI assistance is disclosed.
+Original code and artwork remain MIT licensed. Developed with AI assistance. See CHANGELOG.md and VALIDATION.json for details.

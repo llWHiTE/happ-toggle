@@ -163,7 +163,7 @@ if (process.argv.includes('--diag')) {
 }
 
 // ---------------------------------------------------------------- display
-const { PROVIDERS, DEFAULT_DISPLAY, normalizeDisplay, animationMode, renderKey, renderScreen } = require('./lib/display.js');
+const { PROVIDERS, DEFAULT_DISPLAY, normalizeDisplay, animationMode, renderKey, renderScreen, setTranslator } = require('./lib/display.js');
 
 // ---------------------------------------------------------------- main logic
 const args = process.argv.slice(2);
@@ -176,7 +176,7 @@ const ACTION_TOGGLE = 'com.llwhite.happtoggle.toggle';
 const ACTION_SPEED = 'com.llwhite.happtoggle.speed';
 
 const DEFAULT_SETTINGS = { icons: {}, speedAuto: false, speedDelaySec: 3, speedSeconds: 6, displaySec: 10,
-  speedProvider: 'yandex', language: 'ru', speedDisplayMode: 'combined',
+  speedProvider: 'yandex', speedDisplayMode: 'combined',
   transparentScreen: false, hideTestServer: false, ...DEFAULT_DISPLAY };
 
 const contexts = new Map();  // context -> { action, controller, device, settings, speed, hold, autoTimer }
@@ -194,6 +194,7 @@ let animationFrame = Date.now();
 function mergeSettings(s) {
   const m = normalizeDisplay({ ...DEFAULT_SETTINGS, ...(s || {}) });
   m.icons = { ...(s && s.icons ? s.icons : {}) };
+  delete m.language;
   if (!PROVIDERS.includes(m.speedProvider)) m.speedProvider = 'yandex';
   return m;
 }
@@ -604,6 +605,7 @@ if (!PORT || !UUID || !REGISTER) {
 
 import('@elgato/streamdeck').then((sdk) => {
   ws = createSDKAdapter(sdk, { actionIds: [ACTION_TOGGLE, ACTION_SPEED], onMessage, log });
+  setTranslator((key) => ws.translate(key));
   return ws.connect();
 }).catch(() => {
   log('Stream Deck SDK initialization failed');

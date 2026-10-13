@@ -9,10 +9,8 @@ const STYLES = {
   regular: { weight: 400, style: 'normal' }, semibold: { weight: 600, style: 'normal' },
   bold: { weight: 700, style: 'normal' }, italic: { weight: 400, style: 'italic' },
 };
-const TEXT = {
-  ru: { error: 'Замер не удался', mbps: 'Мбит/с', mbytes: 'МБ/с' },
-  en: { error: 'Speed test failed', mbps: 'Mbps', mbytes: 'MB/s' },
-};
+let translate = (key) => key;
+function setTranslator(provider) { translate = provider; }
 const COLORS = { on: '#34d399', off: '#829198', pending: '#d69e2e', unknown: '#f87171',
   ping: '#d69e2e', download: '#34d399', upload: '#c084fc' };
 const DEFAULT_DISPLAY = {
@@ -40,7 +38,7 @@ function xml(value) {
   return String(value).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' }[c]));
 }
 
-function language(settings) { return TEXT[settings.language === 'en' ? 'en' : 'ru']; }
+function localizedText() { return { error: translate('Speed test failed'), mbps: translate('Mbps'), mbytes: translate('MB/s') }; }
 
 function fmtSpeed(value, settings) {
   if (!Number.isFinite(value)) return '—';
@@ -135,7 +133,7 @@ function speedResultImage(values, settings, speed, time) {
     text(134, downY, down, size(down), COLORS.download, 'end', settings) +
     metricIcon('upload', 15, upY - 13, 24, settings, speed, time) +
     text(134, upY, up, size(up), COLORS.upload, 'end', settings) +
-    (units ? text(72, 111, language(settings)[settings.speedUnit], 18) : '') +
+    (units ? text(72, 111, localizedText()[settings.speedUnit], 18) : '') +
     metricIcon('ping', 26, 129, 17, settings, speed, time) +
     text(85, 137, `${fmtPing(values.pingMs)} ms`, fit(`${fmtPing(values.pingMs)} ms`, 94, 20, settings), '#e5edeb', 'middle', settings);
 }
@@ -146,7 +144,7 @@ function phaseValue(phase, values, settings) {
 
 function speedPhaseImage(speed, values, settings, time) {
   const phase = speed.phase, value = phaseValue(phase, values, settings);
-  const unit = phase === 'ping' ? 'ms' : settings.showSpeedUnits ? language(settings)[settings.speedUnit] : '';
+  const unit = phase === 'ping' ? 'ms' : settings.showSpeedUnits ? localizedText()[settings.speedUnit] : '';
   return metricIcon(phase, 72, unit ? 28 : 23, 28, settings, speed, time) +
     text(72, unit ? 101 : 115, value, fit(value, 126, unit ? 64 : 74, settings), COLORS[phase], 'middle', settings) +
     (unit ? text(72, 132, unit, 18) : '');
@@ -161,7 +159,7 @@ function renderKey(info, state, time) {
       ? speedIdleImage(settings, speed, time) : power(state, 72, 72, 108, breathe(settings, speed, time)));
   }
   const values = speed.phase ? speed.partial || {} : speed.result || {};
-  const body = speed.error ? text(72, 76, language(settings).error, fit(language(settings).error, 128, 20), '#f87171')
+  const body = speed.error ? text(72, 76, localizedText().error, fit(localizedText().error, 128, 20), '#f87171')
     : speed.phase && settings.speedDisplayMode === 'phase' ? speedPhaseImage(speed, values, settings, time)
     : speedResultImage(values, settings, speed, time);
   return svg(144, 144, (custom ? customImage(custom, 0.25) : '') + body);
@@ -187,7 +185,7 @@ function renderScreen(info, state, snapshot, time) {
   const limit = neo ? 25 : 23;
   const short = clean.length > limit ? clean.slice(0, limit - 1) + '…' : clean;
   const serverVisible = !settings.hideTestServer && !!short;
-  const t = language(settings), width = neo ? 232 : 200, height = neo ? 50 : 100;
+  const t = localizedText(), width = neo ? 232 : 200, height = neo ? 50 : 100;
   const phaseMode = speed.phase && settings.speedDisplayMode === 'phase';
   const inPingPhase = phaseMode && speed.phase === 'ping';
   const pingVisible = settings.showScreenPing && !inPingPhase;
@@ -232,4 +230,4 @@ function renderScreen(info, state, snapshot, time) {
   return svg(width, height, (settings.transparentScreen ? '' : `<rect width="${width}" height="${height}" fill="#171b1e"/>`) + labels + numbers, true);
 }
 
-module.exports = { PROVIDERS, DEFAULT_DISPLAY, normalizeDisplay, animationMode, renderKey, renderScreen };
+module.exports = { PROVIDERS, DEFAULT_DISPLAY, normalizeDisplay, animationMode, renderKey, renderScreen, setTranslator };

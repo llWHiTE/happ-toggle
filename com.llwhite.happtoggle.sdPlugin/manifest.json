@@ -1,12 +1,12 @@
 {
   "SDKVersion": 3,
   "Name": "Happ Toggle",
-  "Version": "1.12.0.0",
+  "Version": "1.12.1.0",
   "UUID": "com.llwhite.happtoggle",
   "Author": "Alexey Storozhilov",
   "URL": "https://github.com/llWHiTE",
   "SupportURL": "https://github.com/llWHiTE",
-  "Description": "Переключает Happ VPN и замеряет скорость через Yandex, Cloudflare или Speedtest.net. Выбор сервиса кнопкой или крутилкой; статус и скорость на экранах Stream Deck+ и Neo.",
+  "Description": "Toggle Happ VPN and test connection speed. Select a test service by key or dial; display VPN status and measured speed on Stream Deck+ and Neo.",
   "Icon": "imgs/plugin",
   "CodePath": "bin/plugin.js",
   "Nodejs": {
@@ -29,7 +29,7 @@
       "Name": "Happ VPN",
       "UUID": "com.llwhite.happtoggle.toggle",
       "Icon": "imgs/action",
-      "Tooltip": "Переключить Happ VPN и показать статус. Долгое нажатие — замер скорости.",
+      "Tooltip": "Toggle Happ VPN and display status. Hold to test connection speed.",
       "Controllers": [
         "Keypad"
       ],
@@ -42,10 +42,10 @@
       ]
     },
     {
-      "Name": "Замер скорости",
+      "Name": "Speed Test",
       "UUID": "com.llwhite.happtoggle.speed",
       "Icon": "imgs/action",
-      "Tooltip": "Короткое нажатие — замер/отмена; удержание кнопки — сервис, удержание крутилки — VPN. Вращение — сервис, касание — VPN. Экран Neo — статус и результат.",
+      "Tooltip": "Short press starts/cancels a test. Hold the key to cycle services; hold the dial to toggle VPN. Rotate to select a service, tap to toggle VPN. Neo screen displays status and results.",
       "Controllers": [
         "Keypad",
         "Encoder",
@@ -54,9 +54,9 @@
       "Encoder": {
         "layout": "layouts/speed.json",
         "TriggerDescription": {
-          "Push": "Коротко — замер/отмена; удержание — VPN",
-          "Rotate": "Выбрать сервис замера",
-          "Touch": "Переключить Happ VPN"
+          "Push": "Short press: test/cancel; hold: VPN",
+          "Rotate": "Select test service",
+          "Touch": "Toggle Happ VPN"
         }
       },
       "PropertyInspectorPath": "ui/pi.html",

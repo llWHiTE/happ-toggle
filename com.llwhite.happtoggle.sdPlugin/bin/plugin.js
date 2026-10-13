@@ -38,9 +38,9 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 
-// happ-toggle/publish/1.12/github/com.llwhite.happtoggle.sdPlugin/lib/sdk.js
+// happ-toggle/publish/1.12.1/github/com.llwhite.happtoggle.sdPlugin/lib/sdk.js
 var require_sdk = __commonJS({
-  "happ-toggle/publish/1.12/github/com.llwhite.happtoggle.sdPlugin/lib/sdk.js"(exports, module) {
+  "happ-toggle/publish/1.12.1/github/com.llwhite.happtoggle.sdPlugin/lib/sdk.js"(exports, module) {
     "use strict";
     module.exports = function createSDKAdapter(sdk, { actionIds, onMessage, log }) {
       const streamDeck2 = sdk.default;
@@ -100,6 +100,9 @@ var require_sdk = __commonJS({
         emit({ event: "deviceDidDisconnect", device: ev.device.id });
       });
       return {
+        translate(key) {
+          return streamDeck2.i18n.translate(key);
+        },
         async connect() {
           await streamDeck2.connect();
           log("connected to Stream Deck through official SDK");
@@ -142,9 +145,9 @@ var require_sdk = __commonJS({
   }
 });
 
-// happ-toggle/publish/1.12/github/com.llwhite.happtoggle.sdPlugin/lib/speedtest.js
+// happ-toggle/publish/1.12.1/github/com.llwhite.happtoggle.sdPlugin/lib/speedtest.js
 var require_speedtest = __commonJS({
-  "happ-toggle/publish/1.12/github/com.llwhite.happtoggle.sdPlugin/lib/speedtest.js"(exports, module) {
+  "happ-toggle/publish/1.12.1/github/com.llwhite.happtoggle.sdPlugin/lib/speedtest.js"(exports, module) {
     "use strict";
     var { execFile } = __require("child_process");
     var fs3 = __require("fs");
@@ -504,9 +507,9 @@ var require_speedtest = __commonJS({
   }
 });
 
-// happ-toggle/publish/1.12/github/com.llwhite.happtoggle.sdPlugin/lib/happ-window.js
+// happ-toggle/publish/1.12.1/github/com.llwhite.happtoggle.sdPlugin/lib/happ-window.js
 var require_happ_window = __commonJS({
-  "happ-toggle/publish/1.12/github/com.llwhite.happtoggle.sdPlugin/lib/happ-window.js"(exports, module) {
+  "happ-toggle/publish/1.12.1/github/com.llwhite.happtoggle.sdPlugin/lib/happ-window.js"(exports, module) {
     "use strict";
     var { exec, execFile } = __require("child_process");
     var API = String.raw`
@@ -579,9 +582,9 @@ for ($i = 0; $i -lt 20; $i++) {
   }
 });
 
-// happ-toggle/publish/1.12/github/com.llwhite.happtoggle.sdPlugin/lib/display.js
+// happ-toggle/publish/1.12.1/github/com.llwhite.happtoggle.sdPlugin/lib/display.js
 var require_display = __commonJS({
-  "happ-toggle/publish/1.12/github/com.llwhite.happtoggle.sdPlugin/lib/display.js"(exports, module) {
+  "happ-toggle/publish/1.12.1/github/com.llwhite.happtoggle.sdPlugin/lib/display.js"(exports, module) {
     "use strict";
     var PROVIDERS = ["yandex", "cloudflare", "speedtest"];
     var PROVIDER_NAMES = { yandex: "Yandex", cloudflare: "Cloudflare", speedtest: "Speedtest.net" };
@@ -593,10 +596,10 @@ var require_display = __commonJS({
       bold: { weight: 700, style: "normal" },
       italic: { weight: 400, style: "italic" }
     };
-    var TEXT = {
-      ru: { error: "\u0417\u0430\u043C\u0435\u0440 \u043D\u0435 \u0443\u0434\u0430\u043B\u0441\u044F", mbps: "\u041C\u0431\u0438\u0442/\u0441", mbytes: "\u041C\u0411/\u0441" },
-      en: { error: "Speed test failed", mbps: "Mbps", mbytes: "MB/s" }
-    };
+    var translate = (key) => key;
+    function setTranslator(provider) {
+      translate = provider;
+    }
     var COLORS = {
       on: "#34d399",
       off: "#829198",
@@ -638,8 +641,8 @@ var require_display = __commonJS({
     function xml(value) {
       return String(value).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&apos;" })[c]);
     }
-    function language(settings2) {
-      return TEXT[settings2.language === "en" ? "en" : "ru"];
+    function localizedText() {
+      return { error: translate("Speed test failed"), mbps: translate("Mbps"), mbytes: translate("MB/s") };
     }
     function fmtSpeed(value, settings2) {
       if (!Number.isFinite(value)) return "\u2014";
@@ -707,14 +710,14 @@ var require_display = __commonJS({
       const units = settings2.showSpeedUnits;
       const size = (v) => fit(v, 100, units ? 40 : 47, settings2);
       const downY = units ? 44 : 51, upY = units ? 87 : 103;
-      return metricIcon("download", 15, downY - 13, 24, settings2, speed, time3) + text(134, downY, down, size(down), COLORS.download, "end", settings2) + metricIcon("upload", 15, upY - 13, 24, settings2, speed, time3) + text(134, upY, up, size(up), COLORS.upload, "end", settings2) + (units ? text(72, 111, language(settings2)[settings2.speedUnit], 18) : "") + metricIcon("ping", 26, 129, 17, settings2, speed, time3) + text(85, 137, `${fmtPing(values.pingMs)} ms`, fit(`${fmtPing(values.pingMs)} ms`, 94, 20, settings2), "#e5edeb", "middle", settings2);
+      return metricIcon("download", 15, downY - 13, 24, settings2, speed, time3) + text(134, downY, down, size(down), COLORS.download, "end", settings2) + metricIcon("upload", 15, upY - 13, 24, settings2, speed, time3) + text(134, upY, up, size(up), COLORS.upload, "end", settings2) + (units ? text(72, 111, localizedText()[settings2.speedUnit], 18) : "") + metricIcon("ping", 26, 129, 17, settings2, speed, time3) + text(85, 137, `${fmtPing(values.pingMs)} ms`, fit(`${fmtPing(values.pingMs)} ms`, 94, 20, settings2), "#e5edeb", "middle", settings2);
     }
     function phaseValue(phase, values, settings2) {
       return phase === "ping" ? fmtPing(values.pingMs) : fmtSpeed(phase === "download" ? values.downMbps : values.upMbps, settings2);
     }
     function speedPhaseImage(speed, values, settings2, time3) {
       const phase = speed.phase, value = phaseValue(phase, values, settings2);
-      const unit = phase === "ping" ? "ms" : settings2.showSpeedUnits ? language(settings2)[settings2.speedUnit] : "";
+      const unit = phase === "ping" ? "ms" : settings2.showSpeedUnits ? localizedText()[settings2.speedUnit] : "";
       return metricIcon(phase, 72, unit ? 28 : 23, 28, settings2, speed, time3) + text(72, unit ? 101 : 115, value, fit(value, 126, unit ? 64 : 74, settings2), COLORS[phase], "middle", settings2) + (unit ? text(72, 132, unit, 18) : "");
     }
     function renderKey(info, state, time3) {
@@ -725,7 +728,7 @@ var require_display = __commonJS({
         return svg(144, 144, custom2 ? customImage(custom2, breathe(settings2, speed, time3)) : info.action === "com.llwhite.happtoggle.speed" ? speedIdleImage(settings2, speed, time3) : power(state, 72, 72, 108, breathe(settings2, speed, time3)));
       }
       const values = speed.phase ? speed.partial || {} : speed.result || {};
-      const body = speed.error ? text(72, 76, language(settings2).error, fit(language(settings2).error, 128, 20), "#f87171") : speed.phase && settings2.speedDisplayMode === "phase" ? speedPhaseImage(speed, values, settings2, time3) : speedResultImage(values, settings2, speed, time3);
+      const body = speed.error ? text(72, 76, localizedText().error, fit(localizedText().error, 128, 20), "#f87171") : speed.phase && settings2.speedDisplayMode === "phase" ? speedPhaseImage(speed, values, settings2, time3) : speedResultImage(values, settings2, speed, time3);
       return svg(144, 144, (custom2 ? customImage(custom2, 0.25) : "") + body);
     }
     function metric(type, value, x, y, width, max, settings2, speed, time3) {
@@ -746,7 +749,7 @@ var require_display = __commonJS({
       const limit = neo ? 25 : 23;
       const short = clean.length > limit ? clean.slice(0, limit - 1) + "\u2026" : clean;
       const serverVisible = !settings2.hideTestServer && !!short;
-      const t = language(settings2), width = neo ? 232 : 200, height = neo ? 50 : 100;
+      const t = localizedText(), width = neo ? 232 : 200, height = neo ? 50 : 100;
       const phaseMode = speed.phase && settings2.speedDisplayMode === "phase";
       const inPingPhase = phaseMode && speed.phase === "ping";
       const pingVisible = settings2.showScreenPing && !inPingPhase;
@@ -785,7 +788,7 @@ var require_display = __commonJS({
       }
       return svg(width, height, (settings2.transparentScreen ? "" : `<rect width="${width}" height="${height}" fill="#171b1e"/>`) + labels + numbers, true);
     }
-    module.exports = { PROVIDERS, DEFAULT_DISPLAY, normalizeDisplay, animationMode, renderKey, renderScreen };
+    module.exports = { PROVIDERS, DEFAULT_DISPLAY, normalizeDisplay, animationMode, renderKey, renderScreen, setTranslator };
   }
 });
 
@@ -19225,9 +19228,9 @@ var init_plugin = __esm({
   }
 });
 
-// happ-toggle/publish/1.12/github/com.llwhite.happtoggle.sdPlugin/plugin.js
+// happ-toggle/publish/1.12.1/github/com.llwhite.happtoggle.sdPlugin/plugin.js
 var require_plugin = __commonJS({
-  "happ-toggle/publish/1.12/github/com.llwhite.happtoggle.sdPlugin/plugin.js"() {
+  "happ-toggle/publish/1.12.1/github/com.llwhite.happtoggle.sdPlugin/plugin.js"() {
     var net = __require("net");
     var crypto = __require("crypto");
     var fs3 = __require("fs");
@@ -19383,7 +19386,7 @@ $pr = @(Get-Process | ForEach-Object { $_.ProcessName } | Sort-Object -Unique)
       });
       return;
     }
-    var { PROVIDERS, DEFAULT_DISPLAY, normalizeDisplay, animationMode, renderKey, renderScreen } = require_display();
+    var { PROVIDERS, DEFAULT_DISPLAY, normalizeDisplay, animationMode, renderKey, renderScreen, setTranslator } = require_display();
     var args = process.argv.slice(2);
     var argv = (name) => {
       const i = args.indexOf(name);
@@ -19401,7 +19404,6 @@ $pr = @(Get-Process | ForEach-Object { $_.ProcessName } | Sort-Object -Unique)
       speedSeconds: 6,
       displaySec: 10,
       speedProvider: "yandex",
-      language: "ru",
       speedDisplayMode: "combined",
       transparentScreen: false,
       hideTestServer: false,
@@ -19421,6 +19423,7 @@ $pr = @(Get-Process | ForEach-Object { $_.ProcessName } | Sort-Object -Unique)
     function mergeSettings(s) {
       const m = normalizeDisplay({ ...DEFAULT_SETTINGS, ...s || {} });
       m.icons = { ...s && s.icons ? s.icons : {} };
+      delete m.language;
       if (!PROVIDERS.includes(m.speedProvider)) m.speedProvider = "yandex";
       return m;
     }
@@ -19839,6 +19842,7 @@ $pr = @(Get-Process | ForEach-Object { $_.ProcessName } | Sort-Object -Unique)
     }
     Promise.resolve().then(() => (init_plugin(), plugin_exports)).then((sdk) => {
       ws = createSDKAdapter(sdk, { actionIds: [ACTION_TOGGLE, ACTION_SPEED], onMessage, log });
+      setTranslator((key) => ws.translate(key));
       return ws.connect();
     }).catch(() => {
       log("Stream Deck SDK initialization failed");

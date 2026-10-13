@@ -1,5 +1,5 @@
 {
-  "version": "1.12.0",
+  "version": "1.12.1",
   "sdkVersion": 3,
   "nodeSDK": "@elgato/streamdeck 3.0.2",
   "license": "MIT",
@@ -7,7 +7,7 @@
   "json": "passed",
   "propertyInspectorSyntax": "passed",
   "credentialScan": "passed",
-  "descriptionCharacters": 1132,
+  "descriptionCharacters": 1166,
   "artwork": [
     {
       "file": "cover.png",
@@ -67,7 +67,8 @@
     "namespaces": [
       "com.user.happtoggle",
       "com.llwhite.happtoggle"
-    ]
+    ],
+    "schemaUpdateCheck": "Remote schema update timed out; CLI validated successfully using its bundled/cached official schemas."
   },
   "previousSDK2Validation": {
     "status": "passed",
@@ -78,11 +79,14 @@
     ],
     "namespace": "com.llwhite.happtoggle"
   },
-  "hardwareAndNetworkTests": "Owner reported successful v1.12 tests before SDK migration; SDK3 device testing pending. Assistant did not run these tests.",
-  "drm": "SDK3/official Node SDK prerequisites met; Maker Console acceptance/protection remains unverified.",
-  "githubUpload": "SDK3/MIT stable release published; see PUBLICATION.json.",
+  "hardwareAndNetworkTests": "No VPN switching, network speed tests or hardware tests performed for this update.",
+  "drm": "Previous SDK3 Maker Console processing displayed DRM enabled; new package acceptance and product approval are unverified.",
+  "githubUpload": "Verified locally; GitHub update pending.",
   "namespaces": [
     "com.user.happtoggle",
     "com.llwhite.happtoggle"
-  ]
+  ],
+  "localization": "passed: official SDK locale provider, inspector locale loading, settings migration and English fallback",
+  "installerContentsAndCRC": "passed",
+  "inspectorBrowser": "passed: local Chromium preview with mock Stream Deck handshake; English, ru_RU, unsupported locale, dial/Neo/key help and settings preservation"
 }

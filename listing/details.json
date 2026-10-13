@@ -1,6 +1,6 @@
 {
   "name": "Happ Toggle",
-  "version": "1.12.0",
+  "version": "1.12.1",
   "license": "MIT",
   "sdkVersion": 3,
   "nodeSDK": "@elgato/streamdeck 3.0.2",
@@ -12,7 +12,9 @@
   "suggestedSearchTerms": ["Happ", "VPN", "speed test", "Stream Deck+", "Stream Deck Neo", "connection status"],
   "githubTopics": ["streamdeck", "stream-deck-plugin", "happ", "vpn", "windows", "speedtest", "stream-deck-plus", "stream-deck-neo"],
   "requirements": ["Windows 10 or Windows 11", "Stream Deck 7.6 or later", "Happ with happ://toggle_without_ui support", "Windows curl.exe and powershell.exe"],
-  "languages": ["English", "Russian"],
+  "languages": ["English"],
+  "localeResources": ["en", "ru"],
+  "localization": "Follows the Stream Deck application locale; English fallback. Russian resource retained for ru, which is not currently an officially listed Stream Deck UI language.",
   "links": {
     "author": "https://github.com/llWHiTE",
     "happ": "https://github.com/Happ-proxy/happ-desktop",
@@ -27,6 +29,6 @@
     "githubSocialPreview": "../media/github-social-preview.png"
   },
   "aiDisclosure": "Developed and prepared with AI assistance; human review and hardware testing are required before Marketplace submission.",
-  "publicationStatus": "SDK3/MIT build and official CLI 1.10.2 validate/pack passed for both namespaces. Publication is recorded separately in PUBLICATION.json. Older SDK2 preview assets are preserved. Marketplace SDK/DRM acceptance not verified.",
+  "publicationStatus": "1.12.1 localization update; build checks in VALIDATION.json and publication in PUBLICATION.json. Earlier SDK3 Maker Console processing showed compatibility and DRM enabled; resubmission approval remains unverified.",
   "manualTests": "Owner reported successful v1.12 tests before the SDK transport update; new integration needs device verification."
 }

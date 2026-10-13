@@ -2,6 +2,15 @@
 
 This history is reconstructed from retained build manifests/README files and the project's recorded development changes. Early builds were local packages, not tagged public GitHub releases. Dates are omitted where not evidenced. The earliest retained unsuffixed package identifies itself as **1.1.1.0**; a separate 1.0 release is not evidenced. Package filenames and manifest versions were not always aligned.
 
+## 1.12.1
+
+- Use Stream Deck's built-in localization resources for manifest metadata, property inspector text and rendered errors/speed units.
+- Follow the application's language via the official SDK and property-inspector registration information; English fallback for untranslated locales.
+- Remove the per-action language selector and embedded language dictionaries. Existing icons, provider, appearance and timing settings are retained.
+- Keep English and Russian resources in root `en.json` / `ru.json` files, with custom strings under `Localization`. Russian is selected only when supplied as the application's locale; it is not currently listed as an official Stream Deck UI language.
+- Add real SDK locale-provider/rendering tests and inspector tests covering fallback, regional locales and asynchronous settings delivery.
+- Address Marketplace localization feedback; approval of the resubmission remains pending.
+
 ## 1.12.0
 
 - Bahnschrift as the default number/interface font; explicit alternatives preserved.

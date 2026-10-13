@@ -37,6 +37,7 @@ module.exports = function createSDKAdapter(sdk, { actionIds, onMessage, log }) {
   });
 
   return {
+    translate(key) { return streamDeck.i18n.translate(key); },
     async connect() {
       await streamDeck.connect();
       log('connected to Stream Deck through official SDK');

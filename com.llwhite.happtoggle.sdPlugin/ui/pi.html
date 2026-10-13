@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <title>Happ Toggle</title>
@@ -32,23 +32,17 @@
   .hide { display: none !important; }
 </style>
 </head>
-<body>
-
-<h3 data-i18n="languageTitle">Язык / Language</h3>
-<div class="row">
-  <span class="lbl" data-i18n="languageLabel">Язык</span>
-  <select id="language"><option value="ru">Русский</option><option value="en">English</option></select>
-</div>
+<body inert>
 
 <div id="secIcons">
-  <h3 data-i18n="iconsTitle">Иконки статусов</h3>
+  <h3 data-i18n="iconsTitle">Status icons</h3>
   <div id="iconRows"></div>
-  <div class="hint" data-i18n="iconHint">PNG/JPG/GIF/SVG — картинка масштабируется до 144×144. «Сбросить» возвращает встроенную иконку.</div>
+  <div class="hint" data-i18n="iconHint">PNG/JPG/GIF/SVG images are cropped to 144×144. Reset restores the built-in icon.</div>
 </div>
 
-<h3 data-i18n="speedTitle">Замер скорости</h3>
+<h3 data-i18n="speedTitle">Speed test</h3>
 <div class="row" id="rowProvider">
-  <span class="lbl" data-i18n="providerLabel">Сервис замера</span>
+  <span class="lbl" data-i18n="providerLabel">Test service</span>
   <select id="speedProvider">
     <option value="yandex">Yandex</option>
     <option value="cloudflare">Cloudflare</option>
@@ -56,157 +50,111 @@
   </select>
 </div>
 <div class="row" id="rowHideServer">
-  <label class="chk"><input type="checkbox" id="hideTestServer"><span data-i18n="hideTestServer">Скрыть название сервиса/сервера замера</span></label>
+  <label class="chk"><input type="checkbox" id="hideTestServer"><span data-i18n="hideTestServer">Hide test service/server name</span></label>
 </div>
 <div class="row" id="rowScreenBackground">
-  <label class="chk"><input type="checkbox" id="transparentScreen"><span data-i18n="transparentScreen">Прозрачная подложка экрана</span></label>
+  <label class="chk"><input type="checkbox" id="transparentScreen"><span data-i18n="transparentScreen">Transparent screen background</span></label>
 </div>
 <div class="row" id="rowScreenStatus">
-  <span class="lbl" data-i18n="screenStatusLabel">Статус VPN</span>
+  <span class="lbl" data-i18n="screenStatusLabel">VPN status icon</span>
   <select id="screenStatusIcon">
-    <option value="link" data-i18n="statusLink">Связь</option>
-    <option value="power" data-i18n="statusPower">Питание (прежний)</option>
+    <option value="link" data-i18n="statusLink">Connection</option>
+    <option value="power" data-i18n="statusPower">Power (original)</option>
   </select>
 </div>
 <div class="row" id="rowFormat">
-  <span class="lbl" data-i18n="speedDisplayLabel">Формат</span>
+  <span class="lbl" data-i18n="speedDisplayLabel">Layout</span>
   <select id="speedDisplayMode">
-    <option value="combined" data-i18n="combinedMode">↓/↑ вместе</option>
-    <option value="phase" data-i18n="phaseMode">По этапам крупно</option>
+    <option value="combined" data-i18n="combinedMode">↓/↑ together</option>
+    <option value="phase" data-i18n="phaseMode">Large by phase</option>
   </select>
 </div>
-<h3 data-i18n="appearanceTitle">Оформление скорости</h3>
+<h3 data-i18n="appearanceTitle">Speed appearance</h3>
 <div class="row">
-  <span class="lbl" data-i18n="unitLabel">Формат скорости</span>
+  <span class="lbl" data-i18n="unitLabel">Speed format</span>
   <select id="speedUnit">
-    <option value="mbps" data-i18n="megabits">Мбит/с</option>
-    <option value="mbytes" data-i18n="megabytes">МБ/с</option>
+    <option value="mbps" data-i18n="megabits">Mbps</option>
+    <option value="mbytes" data-i18n="megabytes">MB/s</option>
   </select>
 </div>
 <div class="row">
-  <label class="chk"><input type="checkbox" id="showSpeedUnits"><span data-i18n="showSpeedUnits">Показывать единицы скорости</span></label>
+  <label class="chk"><input type="checkbox" id="showSpeedUnits"><span data-i18n="showSpeedUnits">Show speed units</span></label>
 </div>
 <div class="row" id="rowScreenPing">
-  <label class="chk"><input type="checkbox" id="showScreenPing"><span data-i18n="showScreenPing">Показывать задержку на экране</span></label>
+  <label class="chk"><input type="checkbox" id="showScreenPing"><span data-i18n="showScreenPing">Show latency on the screen</span></label>
 </div>
 <div class="row">
-  <span class="lbl" data-i18n="fontLabel">Шрифт цифр</span>
+  <span class="lbl" data-i18n="fontLabel">Number font</span>
   <select id="numberFont">
     <option value="segoe">Segoe UI</option><option value="arial">Arial</option>
     <option value="consolas">Consolas</option><option value="bahnschrift">Bahnschrift</option>
   </select>
 </div>
 <div class="row">
-  <span class="lbl" data-i18n="styleLabel">Стиль цифр</span>
+  <span class="lbl" data-i18n="styleLabel">Number style</span>
   <select id="numberStyle">
-    <option value="regular" data-i18n="styleRegular">Обычный</option>
-    <option value="semibold" data-i18n="styleSemibold">Полужирный</option>
-    <option value="bold" data-i18n="styleBold">Жирный</option>
-    <option value="italic" data-i18n="styleItalic">Курсив</option>
+    <option value="regular" data-i18n="styleRegular">Regular</option>
+    <option value="semibold" data-i18n="styleSemibold">Semibold</option>
+    <option value="bold" data-i18n="styleBold">Bold</option>
+    <option value="italic" data-i18n="styleItalic">Italic</option>
   </select>
 </div>
 <div class="row">
-  <label class="chk"><input type="checkbox" id="animateTest"><span data-i18n="animateTest">Анимация теста скорости</span></label>
+  <label class="chk"><input type="checkbox" id="animateTest"><span data-i18n="animateTest">Speed test animation</span></label>
 </div>
 <div class="row">
-  <label class="chk"><input type="checkbox" id="animateIdle"><span data-i18n="animateIdle">Анимация простоя</span></label>
+  <label class="chk"><input type="checkbox" id="animateIdle"><span data-i18n="animateIdle">Idle animation</span></label>
 </div>
-<div class="hint" data-i18n="appearanceHint">Скрытие единиц не скрывает цифры. Скорость обновляется во время теста; это не текущий трафик. Шрифты берутся из Windows, при отсутствии используется запасной.</div>
+<div class="hint" data-i18n="appearanceHint">Hiding units does not hide the numbers. Speed updates during the test; this is not live traffic. Fonts come from Windows with a fallback if unavailable.</div>
 <div id="rowAuto" class="row">
-  <label class="chk"><input type="checkbox" id="speedAuto"><span data-i18n="speedAuto">Замерять скорость после подключения</span></label>
+  <label class="chk"><input type="checkbox" id="speedAuto"><span data-i18n="speedAuto">Test speed after connecting</span></label>
 </div>
 <div id="rowDelay" class="row">
-  <span class="lbl" data-i18n="delayLabel">Задержка, сек</span>
+  <span class="lbl" data-i18n="delayLabel">Delay, sec</span>
   <input type="number" id="speedDelaySec" min="0" max="60" step="1">
-  <span class="sub" data-i18n="delayHint">после подключения</span>
+  <span class="sub" data-i18n="delayHint">after VPN connects</span>
 </div>
 <div class="row" id="rowDuration">
-  <span class="lbl" data-i18n="durationLabel">Длительность, сек</span>
+  <span class="lbl" data-i18n="durationLabel">Duration, sec</span>
   <input type="number" id="speedSeconds" min="3" max="20" step="1">
-  <span class="sub" data-i18n="durationHint">на загрузку и на отдачу</span>
+  <span class="sub" data-i18n="durationHint">for download and upload</span>
 </div>
 
 <div id="secResult">
-<h3 data-i18n="resultTitle">Отображение результата</h3>
+<h3 data-i18n="resultTitle">Result display</h3>
 <div class="row">
-  <label class="chk"><input type="checkbox" id="holdResult"><span data-i18n="holdResult">До следующего замера</span></label>
+  <label class="chk"><input type="checkbox" id="holdResult"><span data-i18n="holdResult">Until the next test</span></label>
 </div>
 <div class="row">
-  <span class="lbl" data-i18n="displayLabel">Показывать, сек</span>
+  <span class="lbl" data-i18n="displayLabel">Show for, sec</span>
   <input type="number" id="displaySec" min="1" max="3600" step="1">
-  <span class="sub" data-i18n="displayHint">или до следующего замера</span>
+  <span class="sub" data-i18n="displayHint">or until the next test</span>
 </div>
 </div>
 <div class="hint" id="hintManual"></div>
 <p class="hint">Alexey Storozhilov · <a id="authorGithub" href="https://github.com/llWHiTE" style="color:#34d399">GitHub</a></p>
 
+<script src="i18n.js"></script>
 <script>
 const STATES = [
   { key: 'on', color: '#34d399' }, { key: 'off', color: '#829198' },
   { key: 'pending', color: '#d69e2e' }, { key: 'unknown', color: '#f87171' },
 ];
-const STRINGS = {
-  ru: {
-    languageTitle: 'Язык / Language', languageLabel: 'Язык', iconsTitle: 'Иконки статусов',
-    iconHint: 'PNG/JPG/GIF/SVG — картинка масштабируется до 144×144. «Сбросить» возвращает встроенную иконку.',
-    speedTitle: 'Замер скорости', providerLabel: 'Сервис замера', speedAuto: 'Замерять скорость после подключения',
-    hideTestServer: 'Скрыть название сервиса/сервера замера',
-    transparentScreen: 'Прозрачная подложка экрана',
-    screenStatusLabel: 'Статус VPN', statusLink: 'Связь', statusPower: 'Питание (прежний)',
-    speedDisplayLabel: 'Компоновка', combinedMode: '↓/↑ вместе', phaseMode: 'По этапам крупно',
-    appearanceTitle: 'Оформление скорости', unitLabel: 'Формат скорости', megabits: 'Мбит/с', megabytes: 'МБ/с',
-    showSpeedUnits: 'Показывать единицы скорости', showScreenPing: 'Показывать задержку на экране',
-    holdResult: 'До следующего замера', fontLabel: 'Шрифт цифр',
-    styleLabel: 'Стиль цифр', styleRegular: 'Обычный', styleSemibold: 'Полужирный', styleBold: 'Жирный', styleItalic: 'Курсив',
-    animateTest: 'Анимация теста скорости', animateIdle: 'Анимация простоя',
-    appearanceHint: 'Скрытие единиц не скрывает цифры. Скорость обновляется во время теста; это не текущий трафик. Шрифты берутся из Windows, при отсутствии используется запасной.',
-    delayLabel: 'Задержка, сек', delayHint: 'после подключения', durationLabel: 'Длительность, сек',
-    durationHint: 'на загрузку и на отдачу', resultTitle: 'Отображение результата',
-    displayLabel: 'Показывать, сек', displayHint: 'или до следующего замера',
-    on: 'Подключено', off: 'Отключено', pending: 'Переключение', unknown: 'Ошибка',
-    pick: 'Выбрать…', reset: 'Сбросить',
-    manualSpeed: 'Короткое нажатие — запуск замера, повторное — отмена. Удержание свободной кнопки — следующий сервис (Yandex → Cloudflare → Speedtest.net). Выбор сохраняется для этой кнопки; это не VPN-сервер Happ.',
-    manualEncoder: 'Вращение — выбор сервиса замера; короткое нажатие крутилки — запуск/отмена при отпускании; удержание (0.6 с по умолчанию) или касание экрана — переключение Happ VPN. Экран показывает статус и измеренную скорость, не текущий трафик. Итог остаётся до нового теста, смены сервиса или VPN. Прозрачная подложка убирает заливку плагина; вид фона зависит от Stream Deck. Это сервис замера, не VPN-сервер Happ.',
-    manualNeo: 'Infobar Neo показывает статус VPN и тест, запущенный кнопкой на этом же устройстве. Добавьте «Замер скорости» также на обычную кнопку: короткое нажатие — запуск/отмена, удержание — выбор сервиса. Экран не принимает нажатия. Итог сохраняется до нового теста, смены сервиса источника или VPN. Прозрачность убирает заливку плагина, вид фона зависит от Stream Deck. Требуется Stream Deck 7.6+.',
-    manualToggle: 'Без галочки замер только вручную: удерживайте кнопку VPN дольше 0.6 с или добавьте действие «Замер скорости».',
-    fileError: 'Не удалось сохранить изображение. Попробуйте PNG или JPG.',
-    readError: 'Не удалось прочитать изображение', openError: 'Не удалось открыть файл изображения',
-    sizeError: 'Файл иконки слишком большой (не более 10 МБ)',
-  },
-  en: {
-    languageTitle: 'Language / Язык', languageLabel: 'Language', iconsTitle: 'Status icons',
-    iconHint: 'PNG/JPG/GIF/SVG images are cropped to 144×144. Reset restores the built-in icon.',
-    speedTitle: 'Speed test', providerLabel: 'Test service', speedAuto: 'Test speed after connecting',
-    hideTestServer: 'Hide test service/server name',
-    transparentScreen: 'Transparent screen background',
-    screenStatusLabel: 'VPN status icon', statusLink: 'Connection', statusPower: 'Power (original)',
-    speedDisplayLabel: 'Layout', combinedMode: '↓/↑ together', phaseMode: 'Large by phase',
-    appearanceTitle: 'Speed appearance', unitLabel: 'Speed format', megabits: 'Mbps', megabytes: 'MB/s',
-    showSpeedUnits: 'Show speed units', showScreenPing: 'Show latency on the screen',
-    holdResult: 'Until the next test', fontLabel: 'Number font',
-    styleLabel: 'Number style', styleRegular: 'Regular', styleSemibold: 'Semibold', styleBold: 'Bold', styleItalic: 'Italic',
-    animateTest: 'Speed test animation', animateIdle: 'Idle animation',
-    appearanceHint: 'Hiding units does not hide the numbers. Speed updates during the test; this is not live traffic. Fonts come from Windows with a fallback if unavailable.',
-    delayLabel: 'Delay, sec', delayHint: 'after VPN connects', durationLabel: 'Duration, sec',
-    durationHint: 'for download and upload', resultTitle: 'Result display',
-    displayLabel: 'Show for, sec', displayHint: 'or until the next test',
-    on: 'Connected', off: 'Disconnected', pending: 'Connecting', unknown: 'Error',
-    pick: 'Choose…', reset: 'Reset',
-    manualSpeed: 'Short press starts a test; press again to cancel. Hold the idle key to cycle Yandex → Cloudflare → Speedtest.net. The choice is saved for this key; it is not the Happ VPN server.',
-    manualEncoder: 'Rotate to select a test service; short press starts/cancels on release; hold (0.6 s by default) or tap the screen to toggle Happ VPN. The screen shows status and measured speed, not live traffic. Results remain until the next test, service or VPN change. Transparency removes the plugin fill; the actual background depends on Stream Deck. This is a test service, not the Happ VPN server.',
-    manualNeo: 'Neo Infobar displays VPN status and tests started by a key on the same device. Also place Speed Test on a regular key: short press starts/cancels, hold cycles services. Infobar does not accept presses. Results remain until the next test, source service or VPN change. Transparency removes the plugin fill; the actual background depends on Stream Deck. Requires Stream Deck 7.6+.',
-    manualToggle: 'With auto-test off, hold the VPN key for over 0.6 s or add a separate Speed Test action.',
-    fileError: 'Cannot save image. Try PNG or JPG.', readError: 'Cannot read image',
-    openError: 'Cannot open image file', sizeError: 'Icon file is too large (max 10 MB)',
-  },
-};
+let translations = {}, applicationLanguage = 'en';
+const localizationReady = StreamDeckLocalization.load('en').then((locale) => {
+  if (!uuid) {
+    translations = locale.strings;
+    fillForm();
+    document.body.inert = false;
+  }
+}).catch((error) => console.error('Cannot load English fallback:', error));
 const DEFAULTS = { icons: {}, speedAuto: false, speedDelaySec: 3, speedSeconds: 6, displaySec: 10,
-  speedProvider: 'yandex', language: 'ru', speedDisplayMode: 'combined',
+  speedProvider: 'yandex', speedDisplayMode: 'combined',
   transparentScreen: false, hideTestServer: false, speedUnit: 'mbps', showSpeedUnits: true, showScreenPing: false,
   numberFont: 'bahnschrift', numberStyle: 'semibold', screenStatusIcon: 'link', animateTest: true, animateIdle: true };
 let socket, uuid, settings = { ...DEFAULTS, icons: {} }, action = '', controller = 'Keypad';
 let lastDisplaySec = 10;
-const t = () => STRINGS[settings.language] || STRINGS.ru;
+const t = () => translations;
 
 const $ = (id) => document.getElementById(id);
 
@@ -289,14 +237,14 @@ function toDataUrl(file, cb) {
 }
 
 function applyLanguage() {
-  document.documentElement.lang = settings.language;
+  document.documentElement.lang = applicationLanguage;
   document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t()[el.dataset.i18n]; });
   buildIconRows();
   applyActionLayout();
 }
 
 function fillForm() {
-  $('language').value = settings.language;
+  if (!Object.keys(translations).length) return;
   $('speedProvider').value = settings.speedProvider;
   $('speedDisplayMode').value = settings.speedDisplayMode;
   for (const key of ['speedUnit', 'numberFont', 'numberStyle', 'screenStatusIcon']) $(key).value = settings[key];
@@ -325,7 +273,6 @@ function bind() {
   for (const key of ['speedUnit', 'numberFont', 'numberStyle', 'screenStatusIcon']) {
     $(key).onchange = () => { settings[key] = $(key).value; save(); };
   }
-  $('language').onchange = () => { settings.language = $('language').value; applyLanguage(); save(); };
   $('speedProvider').onchange = () => { settings.speedProvider = $('speedProvider').value; save(); };
   $('speedDisplayMode').onchange = () => { settings.speedDisplayMode = $('speedDisplayMode').value; save(); };
   $('holdResult').onchange = () => {
@@ -369,7 +316,7 @@ function applyActionLayout() {
 function mergeIn(s) {
   settings = { ...DEFAULTS, ...(s || {}) };
   settings.icons = { ...((s && s.icons) || {}) };
-  if (settings.language !== 'en') settings.language = 'ru';
+  delete settings.language;
   if (!['yandex', 'cloudflare', 'speedtest'].includes(settings.speedProvider)) settings.speedProvider = 'yandex';
   if (settings.speedDisplayMode !== 'phase') settings.speedDisplayMode = 'combined';
   delete settings.hideStatusLabels;
@@ -387,6 +334,14 @@ function mergeIn(s) {
 
 window.connectElgatoStreamDeckSocket = function (port, inUUID, registerEvent, info, actionInfo) {
   uuid = inUUID;
+  document.body.inert = true;
+  try { applicationLanguage = JSON.parse(info).application.language || 'en'; } catch (_) { applicationLanguage = 'en'; }
+  StreamDeckLocalization.load(applicationLanguage).then((locale) => {
+    translations = locale.strings;
+    applicationLanguage = locale.language;
+    fillForm();
+    document.body.inert = false;
+  }).catch((error) => console.error('Cannot load Stream Deck localization:', error));
   try {
     const ai = JSON.parse(actionInfo);
     action = ai.action || '';
