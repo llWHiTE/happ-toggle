@@ -1,8 +1,8 @@
 {
   "version": "1.12.4",
   "manifestVersion": "1.12.4.0",
-  "status": "validated-for-publication",
-  "statusMeaning": "This source snapshot is prepared before the GitHub release is published. The GitHub release and its asset digests are authoritative for completed publication.",
+  "status": "published",
+  "statusMeaning": "GitHub publication and asset digests verified. The immutable release tag and source archive identify sourceCommit; this later report-only commit does not move the tag.",
   "repository": "https://github.com/llWHiTE/happ-toggle",
   "release": "https://github.com/llWHiTE/happ-toggle/releases/tag/v1.12.4",
   "tag": "v1.12.4",
@@ -12,7 +12,9 @@
   "elgatoInstaller": "Same byte-identical public installer; upload as an update to the existing product",
   "compatibilityInstaller": "com.user.happtoggle-1.12.4.streamDeckPlugin; not for the public Marketplace product",
   "marketplaceSubmission": "Not submitted automatically; CLI validation does not claim Marketplace review/DRM approval",
-  "uiLanguages": ["en"],
+  "uiLanguages": [
+    "en"
+  ],
   "sdkVersion": 3,
   "nodeSDK": "3.0.2",
   "elgatoCLI": "1.10.2",
@@ -21,5 +23,73 @@
   "packageReport": "PACKAGE_CHECK.json",
   "existingReleasesPolicy": "Do not modify older tags, releases or assets",
   "documentationPolicy": "Preserve the owner's README and repository description",
-  "remainingManualChecks": "Physical Stream Deck controls/display, normal update installation and Happ window-state regression; Elgato submission/review"
+  "remainingManualChecks": "Physical Stream Deck controls/display, normal update installation and Happ window-state regression; Elgato submission/review",
+  "sourceCommit": "6842144d58b38c50a7be49b2a397d4cc98959b62",
+  "releaseId": 414190366,
+  "latestStable": true,
+  "verifiedAt": "2026-10-15T19:29:00.770Z",
+  "oldReleasesAndTagsUnchanged": true,
+  "ownerReadmeAndDescriptionUnchanged": true,
+  "assets": [
+    {
+      "name": "CHANGELOG.md",
+      "size": 8139,
+      "digest": "sha256:40f6f9672c4b87ff38f35840fd5284979403b09abc6d3008216559952ad30e95",
+      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.4/CHANGELOG.md"
+    },
+    {
+      "name": "com.llwhite.happtoggle.streamDeckPlugin",
+      "size": 155910,
+      "digest": "sha256:8a58d7ad613a8643ac1c89b19612b48649bb91e57a2e56414090d240601fc22d",
+      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.4/com.llwhite.happtoggle.streamDeckPlugin"
+    },
+    {
+      "name": "com.user.happtoggle-1.12.4.streamDeckPlugin",
+      "size": 155522,
+      "digest": "sha256:31a2ff2cbd7e81f511ba38c1477fd8e5436917b0f6d0bd3f4ee9628ed749d242",
+      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.4/com.user.happtoggle-1.12.4.streamDeckPlugin"
+    },
+    {
+      "name": "happ-toggle-github-source-1.12.4.zip",
+      "size": 816548,
+      "digest": "sha256:476d4dedb8c1c42a0a9a97a136de3fbbf1a635d661867f1f0f4c17cff3906738",
+      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.4/happ-toggle-github-source-1.12.4.zip"
+    },
+    {
+      "name": "HISTORY.md",
+      "size": 4116,
+      "digest": "sha256:dc6d63cdb0b2775f3130bf493c35e82ef1aa63ea74cc06b85bc6891ddcb01fe8",
+      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.4/HISTORY.md"
+    },
+    {
+      "name": "LICENSE",
+      "size": 1096,
+      "digest": "sha256:b16b4c6ff92d6dca5ffc535f2a88927ceb2cb0140ee5b14a694db397b9cebd1d",
+      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.4/LICENSE"
+    },
+    {
+      "name": "PACKAGE_CHECK.json",
+      "size": 2462,
+      "digest": "sha256:2c40b59d6aa46009c422fe8c1745021112121b93066a4faa71eb8461280b52a2",
+      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.4/PACKAGE_CHECK.json"
+    },
+    {
+      "name": "RELEASE_NOTES.md",
+      "size": 3359,
+      "digest": "sha256:bf9b599b58d33f2324d03f3426e4857608b5605e61c44c9e0d96d2766dbc64fb",
+      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.4/RELEASE_NOTES.md"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "size": 799,
+      "digest": "sha256:686130fad1336aea3bd9055097bc95697e6cd068165e0cf2987173a5a11d30df",
+      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.4/SHA256SUMS.txt"
+    },
+    {
+      "name": "VALIDATION.json",
+      "size": 8318,
+      "digest": "sha256:33884a163b4c3a5f0c85fa2ce1d11277ab9754dc3030a76f54dd82f6719d3d36",
+      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.4/VALIDATION.json"
+    }
+  ]
 }
