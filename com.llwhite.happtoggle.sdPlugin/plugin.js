@@ -132,14 +132,14 @@ async function resolveSpeedProxy(fresh) {
     const p = fresh || (await probe());
     if (cfg.proxyMatch && !new RegExp(cfg.proxyMatch, 'i').test(p.proxyServer || '')) return '';
     return proxyUrlFromSystem(p);
-  } catch (_) { throw new Error('Не удалось определить прокси Happ. Замер отменён, чтобы не использовать другой маршрут.'); }
+  } catch (_) { throw new Error('Cannot determine the Happ proxy. Test cancelled to avoid using a different route.'); }
 }
 
 // ---------------------------------------------------------------- diag mode
 if (process.argv.includes('--speed')) {
   (async () => {
     const proxy = await resolveSpeedProxy();
-    console.log('proxy:', proxy ? '(enabled)' : '(нет)');
+    console.log('proxy:', proxy ? '(enabled)' : '(none)');
     const r = await runSpeedTest(
       { provider: process.argv.includes('--provider') ? process.argv[process.argv.indexOf('--provider') + 1] : 'yandex', server: cfg.speedServer,
         proxy, streams: cfg.speedStreams, seconds: Number(process.argv[process.argv.indexOf('--speed') + 1]) || 6 },
@@ -481,9 +481,8 @@ function onMessage(text) {
         ws.sendJSON({ event: 'setFeedbackLayout', context: m.context, payload: { layout: 'layouts/neo.json' } });
       }
       renderCtx(m.context);
-      if (m.action === ACTION_TOGGLE || controller === 'Encoder' || controller === 'Neo') {
-        if (!timer && !polling) tick(); else schedule();
-      }
+      // A standalone speed key also needs route/status monitoring to cancel stale tests.
+      if (!timer && !polling) tick(); else schedule();
       break;
     }
     case 'willDisappear': {
@@ -599,7 +598,7 @@ function onMessage(text) {
 }
 
 if (!PORT || !UUID || !REGISTER) {
-  console.error('Запускается Stream Deck-ом. Диагностика: node plugin.js --diag | node plugin.js --speed');
+  console.error('Started by Stream Deck. Diagnostics: node plugin.js --diag | node plugin.js --speed');
   process.exit(1);
 }
 

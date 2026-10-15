@@ -1,52 +1,64 @@
-# Publication checklist — 1.12.1
+# Publication checklist — 1.12.4
 
-## Localization update
+## Source and localization
 
-- Public UUID `com.llwhite.happtoggle`; compatibility UUID `com.user.happtoggle` remains separate.
-- SDKVersion 3, official `@elgato/streamdeck` 3.0.2 and bundled ESM entry.
-- Root `en.json` and `ru.json` contain localized manifest/action metadata and custom strings under `Localization`.
-- Runtime uses `streamDeck.i18n.translate()`. The inspector uses the application's language from registration information and reads the same resources. No per-action language selector remains.
-- English fallback is used for untranslated application locales. Russian resources remain for `ru`; Russian is not currently listed as an official Stream Deck UI language.
+- Public UUID `com.llwhite.happtoggle`, manifest version `1.12.4.0`, SDKVersion 3, official `@elgato/streamdeck` 3.0.2 and bundled ESM entry.
+- `en.json` is the sole active locale resource. SDK rendering and the inspector fall back to English for every application locale; there is no per-action language selector.
+- Keep existing settings and confirmed Happ window preservation. Service selection is speed-test provider selection, not Happ VPN-server selection.
 
 ## Reproduce from public source
+
+Install pinned development dependencies without running lifecycle scripts:
 
 ```bash
 npm --prefix tools ci --ignore-scripts
 ```
 
+Run the complete offline suite (includes real curl against 127.0.0.1 only):
+
+```bash
+npm --prefix tools test
+```
+
+Run the isolated native window fixture on Windows; it does not control Happ:
+
+```bash
+npm --prefix tools run test:native
+```
+
+Build the runtime and bundled dependency licenses:
+
 ```bash
 node tools/build-plugin.cjs com.llwhite.happtoggle.sdPlugin
 ```
 
-```bash
-node tools/test-sdk.cjs com.llwhite.happtoggle.sdPlugin
-```
+Validate using the pinned CLI/local schemas:
 
 ```bash
-node tools/test-i18n.cjs com.llwhite.happtoggle.sdPlugin
+node tools/node_modules/@elgato/cli/bin/streamdeck.mjs validate com.llwhite.happtoggle.sdPlugin --no-update-check
 ```
+
+Package a new installer into a new output directory:
 
 ```bash
-./tools/node_modules/.bin/streamdeck validate com.llwhite.happtoggle.sdPlugin
+node tools/node_modules/@elgato/cli/bin/streamdeck.mjs pack com.llwhite.happtoggle.sdPlugin --no-update-check --output dist
 ```
 
-```bash
-./tools/node_modules/.bin/streamdeck pack com.llwhite.happtoggle.sdPlugin --output dist
-```
+Do not bypass validation or overwrite an existing release. Dependency notices and MIT LICENSE accompany the installer. Exclude source outside the bundle, node_modules, logs, private user configuration and source maps. Verify ZIP CRC and SHA-256. Elgato CLI normally strips `Nodejs.Debug=disabled` while packing; all other manifest contents must match the validated source. Do not change installed distributed files at runtime.
 
-Dependency notices and MIT LICENSE must accompany the installer. Exclude development source, node_modules, logs and user-config.json. Verify ZIP CRC and SHA-256; do not change distributed files at runtime. Application settings and overrides/logs in the separate user-data directory remain unchanged.
+## Elgato update
 
-## Marketplace resubmission
+Upload **com.llwhite.happtoggle.streamDeckPlugin**, version **1.12.4.0**, to the existing public product in Maker Console. Retain its UUID. Do not upload the separate `com.user.happtoggle` compatibility package. The public installer used for GitHub and Elgato is byte-identical.
 
-Upload the new **public** 1.12.1.0 installer in Maker Console. The earlier SDK3 summary displayed SDK compatibility and DRM enabled; product review subsequently requested built-in localization. This update addresses that request. Local checks do not guarantee approval of the resubmission. Briefly check installation, settings and key/dial/Neo controls before sending it for review.
+English is the only UI language in this build. Release notes explain HTTP goodput, stability fixes and window-state preservation. Physical key/dial/touch/Neo and install/update checks remain manual. Local CLI validation is not product-review or DRM approval; this workflow does not submit to Marketplace.
 
-Descriptions and media are in `listing/` and `media/`. Media are illustrations with sample values, not hardware photographs or benchmarks. Review rights and Elgato's AI policy; AI assistance is disclosed. This release process does not submit the product to Marketplace.
+Descriptions/media are in `listing/` and `media/`. They are illustrations with sample values, not benchmarks. Keep AI-assistance disclosure and third-party rights notices. Older tool scripts may target earlier release directories; do not execute those scripts as the 1.12.4 publication workflow.
 
-## GitHub
+## GitHub publication
 
-Create a new v1.12.1 tag/release, without modifying v1.12.0 or v1.12.0-preview. Preserve the owner's README and repository description. Check the remote branch SHA immediately before pushing; never force-push main or overwrite unreviewed changes. Use existing authenticated GitHub tooling without storing or printing credentials.
+Create a new `v1.12.4` release/tag. Do not replace older releases, assets or tags, or force-push main. Preserve the owner's README and repository description. Check the remote branch immediately before pushing. Use the authenticated GitHub CLI without storing or printing credentials.
 
-Actual local checks and publication state are recorded separately in VALIDATION.json and PUBLICATION.json. SHA256SUMS.txt covers the new installers and release archives.
+`VALIDATION.json` records actual checks; `PACKAGE_CHECK.json` records the verified public installer. Release assets include the public/compatibility installers, source archive, validation/package reports, release notes and SHA256SUMS.txt. A local publication receipt records verified GitHub asset digests after publication; archive hashes can vary across rebuilds even when functional source is unchanged.
 
 ## Official references
 

@@ -67,6 +67,15 @@ function placement(id, controller) {
   assert.ok(!calls.some((call) => call[0] === 'feedback' && call[1] === neo.id));
   completeLayout(); await flush();
   assert.ok(calls.some((call) => call[0] === 'feedback' && call[1] === neo.id));
+  neo.setFeedbackLayout = async () => { throw new Error('transient layout failure'); };
+  adapter.sendJSON({ event: 'setFeedbackLayout', context: neo.id, payload: { layout: 'missing' } });
+  await flush();
+  neo.setFeedbackLayout = async (layout) => calls.push(['recovered-layout', layout]);
+  adapter.sendJSON({ event: 'setFeedbackLayout', context: neo.id, payload: { layout: 'layouts/neo.json' } });
+  adapter.sendJSON({ event: 'setFeedback', context: neo.id, payload: { screen: 'recovered-screen' } });
+  await flush();
+  assert.ok(calls.some((call) => call[0] === 'recovered-layout'));
+  assert.ok(calls.some((call) => call[0] === 'feedback' && call[2].screen === 'recovered-screen'));
   const count = calls.length;
   adapter.sendJSON({ event: 'setImage', context: key.id, payload: { image: 'stale' } });
   registered[0].onWillDisappear(ev);

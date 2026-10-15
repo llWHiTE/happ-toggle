@@ -1,92 +1,158 @@
 {
-  "version": "1.12.1",
-  "sdkVersion": 3,
-  "nodeSDK": "@elgato/streamdeck 3.0.2",
-  "license": "MIT",
-  "syntax": "passed",
-  "json": "passed",
-  "propertyInspectorSyntax": "passed",
-  "credentialScan": "passed",
-  "descriptionCharacters": 1166,
-  "artwork": [
-    {
-      "file": "cover.png",
-      "width": 1920,
-      "height": 960
+  "version": "1.12.4.0",
+  "uuid": "com.llwhite.happtoggle",
+  "finalizedLocalDate": "2026-10-15",
+  "releaseType": "GitHub/Elgato release artifacts; build validation recorded before publication, no automatic installation or Marketplace submission",
+  "publicationVerification": {
+    "finalLocalSourceSuite": "88 passed, 0 failed, 0 skipped; SDK/resource checks and native Windows fixture passed",
+    "publicSourceEquivalence": "Publication source and tests checked against the verified local files with only the expected namespace substitution",
+    "initialPublicCheckoutRun": "87 passed, 1 failed: loopback upload nominal-rate lower bound did not account for host/request overhead",
+    "testCorrection": "Use independent external phase and server-observed timing bounds; retain pacing upper limit, received/acknowledged byte checks and exact result arithmetic",
+    "productionInstallerChangedDuringPublication": false,
+    "repeatPublicCheckoutExecution": "Not repeated after an execution-permission denial; verified local source suite run instead",
+    "publicSourceReproduction": "npm --prefix tools test; npm --prefix tools run test:native (Windows)"
+  },
+  "installer": "com.llwhite.happtoggle.streamDeckPlugin",
+  "installerBytes": 155910,
+  "installerSha256": "8a58d7ad613a8643ac1c89b19612b48649bb91e57a2e56414090d240601fc22d",
+  "checks": {
+    "offline": {
+      "command": "npm --prefix happ-toggle/tools test",
+      "status": "passed",
+      "nodeTests": { "total": 88, "passed": 88, "failed": 0, "cancelled": 0, "skipped": 0, "todo": 0 },
+      "additionalChecks": [
+        "SDK adapter lifecycle, command ordering, stale placement suppression and recovery after transient layout failure",
+        "Official SDK English resources and Keypad/Encoder/Neo rendering for en, ru, ru_RU, de, en_US",
+        "Inspector asynchronous settings/resource loading, English fallback, icon handling and obsolete-setting migration"
+      ],
+      "networkScope": "No public network. Two of the 88 tests use real curl against a Node HTTP server bound only to 127.0.0.1.",
+      "loopbackTests": [
+        "Paced download and server-acknowledged POSTs produce rates within independently defined bounds",
+        "HTTP 200 HTML download is rejected rather than displayed as a speed"
+      ]
     },
-    {
-      "file": "gallery-01-control.png",
-      "width": 1920,
-      "height": 960
+    "nativeWindows": {
+      "command": "npm --prefix happ-toggle/tools run test:native",
+      "status": "passed",
+      "scope": "Isolated Win32 fixture, not Happ",
+      "verified": [
+        "One WM_CLOSE restores close-to-tray state",
+        "Manual reopening remains visible",
+        "Initially visible window remains visible",
+        "Initially taskbar-minimized window remains minimized"
+      ],
+      "realHappDeeplinkSent": false,
+      "vpnToggled": false
     },
-    {
-      "file": "gallery-02-speed.png",
-      "width": 1920,
-      "height": 960
+    "browserInspector": {
+      "status": "passed",
+      "scope": "Actual source inspector in local browser preview; isolated mock WebSocket transport, no Stream Deck connection",
+      "verified": [
+        "ru_RU application locale produces English labels and document language en",
+        "No language selector or Russian visible text",
+        "Saved Cloudflare, MB/s and 10-second settings load correctly",
+        "Changing provider to Speedtest saves it while retaining units/duration and dropping obsolete language setting",
+        "Encoder-specific controls present; screenshot inspected; no horizontal overflow at observed 981 CSS-pixel layout width",
+        "No browser console errors"
+      ],
+      "limitation": "Not a physical Stream Deck inspector or a verified narrow/mobile layout"
     },
-    {
-      "file": "gallery-03-dial.png",
-      "width": 1920,
-      "height": 960
+    "build": {
+      "status": "passed",
+      "sdkVersion": 3,
+      "nodeSDK": "3.0.2",
+      "nodeTarget": "20",
+      "bundler": "esbuild 0.25.12",
+      "entry": "bin/plugin.js",
+      "format": "ESM",
+      "syntaxCheck": "passed",
+      "bundleWarnings": 0,
+      "sourceRuntimeRebuilt": true,
+      "stagedSdkAndLocaleChecks": "passed"
     },
-    {
-      "file": "gallery-04-neo.png",
-      "width": 1920,
-      "height": 960
+    "elgatoCLI": {
+      "version": "1.10.2",
+      "validate": "passed",
+      "pack": "passed",
+      "schemaMode": "local schemas with --no-update-check",
+      "validationBypassed": false,
+      "marketplaceOrDRMApprovalClaimed": false
     },
-    {
-      "file": "github-social-preview.png",
-      "width": 1280,
-      "height": 640
-    },
-    {
-      "file": "marketplace-icon.png",
-      "width": 288,
-      "height": 288
-    },
-    {
-      "file": "plugin-icon-256.png",
-      "width": 256,
-      "height": 256
-    },
-    {
-      "file": "plugin-icon-512.png",
-      "width": 512,
-      "height": 512
+    "archive": {
+      "status": "passed",
+      "details": "PACKAGE_CHECK.json",
+      "files": 20,
+      "crcIntegrity": "passed",
+      "contentsMatchStagedFiles": true,
+      "manifestNormalization": "Elgato CLI removes Nodejs.Debug=disabled; all other manifest content matches staging",
+      "sameActionUUIDsAndControllersAs1_12_3": true,
+      "namespaceReplacementChecked": true,
+      "packagedConfigMatchesSourceDefaults": true,
+      "excluded": ["ru.json", "logs", "user-config.json", "source JS outside bundled runtime", "node_modules", "source maps"],
+      "windowHelperByteIdenticalToAccepted1_12_3": true,
+      "windowHelperSha256": "6400670e9124dba504b2427efedc3553b72ce7a650e0e1ce44f3584a9e3a14f9"
     }
-  ],
-  "adapterSmokeTest": "passed: local stubs only",
-  "sdkBundle": "passed: official @elgato/streamdeck 3.0.2, bundled ESM",
-  "officialElgatoCLI": {
-    "status": "passed",
-    "version": "1.10.2",
-    "commands": [
-      "validate",
-      "pack"
-    ],
-    "namespaces": [
-      "com.user.happtoggle",
-      "com.llwhite.happtoggle"
-    ],
-    "schemaUpdateCheck": "Remote schema update timed out; CLI validated successfully using its bundled/cached official schemas."
   },
-  "previousSDK2Validation": {
-    "status": "passed",
-    "version": "1.10.2",
-    "commands": [
-      "validate",
-      "pack"
-    ],
-    "namespace": "com.llwhite.happtoggle"
+  "measurement": {
+    "method": "http-goodput",
+    "downloadMbps": "received HTTP body bytes * 8 / actual monotonic phase seconds / 1000000",
+    "uploadMbps": "fully HTTP-acknowledged upload bytes * 8 / actual monotonic phase seconds / 1000000",
+    "MBpsDisplay": "Mbps / 8",
+    "includes": ["phase connection/TLS/HTTP waits", "time until final in-flight request completes or times out"],
+    "excludes": ["discovery/preflight bytes and time", "unacknowledged timed-out uploads"],
+    "noPeakSummationOrPercentile": true,
+    "latency": "HTTP response delay after connection/proxy/TLS preparation; not ICMP ping",
+    "routePolicy": "Explicit resolved proxy or explicit direct route; automatic proxy-detection failure cancels instead of silently falling back to direct"
   },
-  "hardwareAndNetworkTests": "No VPN switching, network speed tests or hardware tests performed for this update.",
-  "drm": "Previous SDK3 Maker Console processing displayed DRM enabled; new package acceptance and product approval are unverified.",
-  "githubUpload": "Published; see PUBLICATION.json.",
-  "namespaces": [
-    "com.user.happtoggle",
-    "com.llwhite.happtoggle"
+  "publicEndpointSmoke": {
+    "status": "all three short runs completed successfully earlier in this session",
+    "provenance": "Recorded outputs of one run per service before final packaging; not rerun during finalization",
+    "nominalSecondsPerPhase": 3,
+    "route": "current resolved Happ proxy; proxy details omitted",
+    "serverOrConnectionChanged": false,
+    "results": [
+      {
+        "provider": "yandex",
+        "server": "ext-cloudcdn-ruspb03skynt-01.cdn.yandex.net",
+        "httpLatencyMs": 1,
+        "downMbps": 434.07791056323407,
+        "upMbps": 633.2539647496031,
+        "download": { "bytes": 244105216, "seconds": 4.4988277, "requests": 5, "streams": 4 },
+        "upload": { "bytes": 243269632, "seconds": 3.0732647000000006, "requests": 29, "streams": 4 }
+      },
+      {
+        "provider": "cloudflare",
+        "server": "speed.cloudflare.com",
+        "httpLatencyMs": 42,
+        "downMbps": 361.07101323839026,
+        "upMbps": 55.03342750287219,
+        "download": { "bytes": 135968358, "seconds": 3.0125566, "requests": 6, "streams": 1 },
+        "upload": { "bytes": 25165824, "seconds": 3.6582601000000006, "requests": 3, "streams": 1 }
+      },
+      {
+        "provider": "speedtest",
+        "server": "Speedtest.net #36010",
+        "httpLatencyMs": 24,
+        "downMbps": 363.2385207663069,
+        "upMbps": 175.02608700490373,
+        "download": { "bytes": 137095108, "seconds": 3.0193958000000003, "requests": 6, "streams": 4 },
+        "upload": { "bytes": 75497472, "seconds": 3.4507986, "requests": 9, "streams": 4 }
+      }
+    ],
+    "interpretation": "Availability and measured HTTP goodput for those endpoints/intervals only. Different destinations and stream policies are not directly interchangeable. A late Yandex download took about 4.5 seconds and its actual time was counted. No line-capacity, tariff-speed or all-applications VPN guarantee."
+  },
+  "unchangedScope": [
+    "Happ window restoration helper and accepted brief deeplink flash",
+    "Happ toggle deeplink",
+    "Happ VPN-server selection, subscriptions, account settings and binary",
+    "Router and VPS",
+    "Installed protected Stream Deck plugin",
+    "Historical 1.12.2 and 1.12.3 builds"
   ],
-  "localization": "passed: official SDK locale provider, inspector locale loading, settings migration and English fallback",
-  "installerContentsAndCRC": "passed",
-  "inspectorBrowser": "passed: local Chromium preview with mock Stream Deck handshake; English, ru_RU, unsupported locale, dial/Neo/key help and settings preservation"
+  "remainingManualChecks": [
+    "Install using Stream Deck's normal same-UUID update flow; this installer has not been automatically installed",
+    "Verify physical key/dial/touch/Neo controls, fonts, speed display and cancellation",
+    "Confirm existing Happ open/tray/minimized behavior after the update",
+    "Marketplace review/DRM approval is separate and was not requested"
+  ]
 }

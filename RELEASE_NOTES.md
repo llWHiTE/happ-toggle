@@ -1,26 +1,31 @@
-# Happ Toggle 1.12.1
+# Happ Toggle 1.12.4
 
-## Built-in Stream Deck localization
+## Stability and trustworthy speed measurements
 
-- Plugin/action metadata, property inspector labels/help/errors and rendered speed units now use root locale resources (`en.json`, `ru.json`, custom strings under `Localization`).
-- Runtime text uses the official `streamDeck.i18n.translate()` API. The property inspector follows `info.application.language` and reads the same locale resources, with English fallback.
-- Removed the per-action language selector and embedded translation dictionaries. Previous language overrides are ignored; saved icons, test service, appearance and timing settings are retained.
-- Retained SDKVersion 3, the official Elgato Node SDK, existing UUIDs and key/dial/Neo functionality.
+- Repair the tests for the official Stream Deck SDK and asynchronous property-inspector resources. Add deterministic transfer tests and real curl tests against a loopback-only server.
+- Measure HTTP application goodput consistently: received download bytes or fully HTTP-acknowledged upload bytes divided by actual phase wall-clock time. Include connection, TLS, response waits and final-transfer completion time; do not sum stream peaks or use Cloudflare's fast-sample percentile.
+- Reject unacknowledged timed-out uploads, malformed transfer metrics, unexpected sizes and HTML/JSON download pages instead of displaying misleading speeds.
+- Fix curl startup without an AbortSignal, VPN-status monitoring for a standalone Speed Test key, and screen-layout recovery after a transient SDK error.
+- Use English as the sole UI resource for every Stream Deck application locale. Remove the Russian resource and ignore obsolete per-action language settings without losing other saved settings.
 
-English is the fallback for languages without a supplied translation. Russian resources are retained for an application locale of `ru`; Russian is not currently listed as an official Stream Deck UI language.
+## Happ window preservation
 
-## Installation
+This public update also includes the local 1.12.3 window-state fix: an open Happ window stays open, a tray window returns to tray using Happ's own close handler, and a taskbar-minimized window is minimized again. No forced SW_HIDE, repeated hide loop or focus manipulation. A brief deeplink-induced window flash can still occur. The user confirmed this behavior in 1.12.3; the helper is unchanged in 1.12.4.
 
-- Public package: `com.llwhite.happtoggle.streamDeckPlugin`.
-- Compatibility package for the earlier test UUID: `com.user.happtoggle-1.12.1.streamDeckPlugin`.
-- Requirements remain Windows 10/11, Stream Deck 7.6+ and Happ installed separately.
+Dial/key provider selection changes only **Yandex / Cloudflare / Speedtest.net**, never Happ's VPN server. Server selection, subscriptions and account settings are unchanged.
 
-The 1.12.0 release remains unchanged. The repository README and description edited by the owner are preserved.
+## Installation and Marketplace
 
-## Verification and Marketplace
+- Public/Marketplace installer: **com.llwhite.happtoggle.streamDeckPlugin**, manifest version **1.12.4.0**, SDKVersion 3.
+- Requirements: Windows 10/11, Stream Deck 7.6+ and Happ installed separately.
+- Update the same UUID to retain existing actions/settings. Do not delete buttons or reinstall Happ.
+- The compatibility installer for the earlier test UUID is provided separately; do not upload it to the existing public Marketplace product.
+- Upload the public installer as an update to the existing product in Elgato Maker Console. Local CLI validation is not Marketplace/DRM approval; submission is not performed by this release process.
 
-Official SDK localization tests, inspector fallback/settings tests and adapter smoke tests passed. Both installers passed official Elgato CLI 1.10.2 validation and packaging; archive contents, CRC and SHA-256 are verified. No VPN switching, network speed tests or hardware tests were performed by the assistant for this update.
+## Verification and limits
 
-This update addresses Elgato's localization review feedback. The previous Maker Console summary displayed SDK3 compatibility and DRM enabled; approval of this resubmission is not claimed. Upload the new public installer and briefly check the settings and controls on your device.
+88 offline tests passed with no failures/skips, plus SDK resource/adapter checks and an isolated native Windows tray fixture. The offline suite includes actual curl transfers against a server bound only to 127.0.0.1. The public installer passed Elgato CLI 1.10.2 validation/packaging and archive CRC/SHA-256 checks. Separate short smoke runs for all three public services completed over the current resolved Happ proxy without changing the VPN server or connection.
 
-Original code and artwork remain MIT licensed. Developed with AI assistance. See CHANGELOG.md and VALIDATION.json for details.
+Speed is measured HTTP goodput to the chosen endpoint, not guaranteed link/tariff capacity or continuous traffic monitoring. Providers can differ. MB/s is Mbps divided by eight; latency is HTTP delay, not ICMP ping. New physical-device controls/display checks remain manual. See VALIDATION.json and PACKAGE_CHECK.json for the actual scope.
+
+Older releases/tags/assets, the owner's repository README and repository description are preserved. Original code/artwork remain MIT licensed; developed with AI assistance.

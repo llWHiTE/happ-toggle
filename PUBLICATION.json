@@ -1,57 +1,25 @@
 {
-  "version": "1.12.1",
-  "status": "published",
+  "version": "1.12.4",
+  "manifestVersion": "1.12.4.0",
+  "status": "validated-for-publication",
+  "statusMeaning": "This source snapshot is prepared before the GitHub release is published. The GitHub release and its asset digests are authoritative for completed publication.",
   "repository": "https://github.com/llWHiTE/happ-toggle",
-  "release": "https://github.com/llWHiTE/happ-toggle/releases/tag/v1.12.1",
-  "marketplaceSubmission": "Previous SDK3 processing showed SDK compatibility and DRM enabled; product review requested built-in localization. Updated package not submitted by this session.",
-  "hardwareAndNetworkTests": "No VPN switching, speed tests or hardware tests performed for this update.",
-  "localUpdate": {
-    "license": "MIT",
-    "sdkVersion": 3,
-    "status": "published",
-    "stableRelease": "v1.12.1",
-    "existingAssets": "Old releases, tags and assets left unchanged."
-  },
-  "officialValidation": "SDK3 build, official Elgato CLI 1.10.2 validate/pack and localization tests passed for both UUIDs.",
-  "sourceCommit": "84f7419f212964bcf57faf112fe9cbeb3ecdf1d1",
-  "prerelease": false,
-  "draft": false,
-  "documentationPreserved": {
-    "readmeBlobSHA": "4e072a3e679d359f6d289745bd9e04d8876377fe",
-    "description": "Happ VPN control and measured speed for Stream Deck keys, dials and Neo Infobar on Windows."
-  },
-  "assets": [
-    {
-      "name": "com.llwhite.happtoggle.streamDeckPlugin",
-      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.1/com.llwhite.happtoggle.streamDeckPlugin"
-    },
-    {
-      "name": "com.user.happtoggle-1.12.1.streamDeckPlugin",
-      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.1/com.user.happtoggle-1.12.1.streamDeckPlugin"
-    },
-    {
-      "name": "happ-toggle-github-source-1.12.1.zip",
-      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.1/happ-toggle-github-source-1.12.1.zip"
-    },
-    {
-      "name": "happ-toggle-publication-kit-1.12.1.zip",
-      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.1/happ-toggle-publication-kit-1.12.1.zip"
-    },
-    {
-      "name": "LICENSE",
-      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.1/LICENSE"
-    },
-    {
-      "name": "CHANGELOG.md",
-      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.1/CHANGELOG.md"
-    },
-    {
-      "name": "HISTORY.md",
-      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.1/HISTORY.md"
-    },
-    {
-      "name": "SHA256SUMS.txt",
-      "url": "https://github.com/llWHiTE/happ-toggle/releases/download/v1.12.1/SHA256SUMS.txt"
-    }
-  ]
+  "release": "https://github.com/llWHiTE/happ-toggle/releases/tag/v1.12.4",
+  "tag": "v1.12.4",
+  "publicUUID": "com.llwhite.happtoggle",
+  "publicInstaller": "com.llwhite.happtoggle.streamDeckPlugin",
+  "publicInstallerSha256": "8a58d7ad613a8643ac1c89b19612b48649bb91e57a2e56414090d240601fc22d",
+  "elgatoInstaller": "Same byte-identical public installer; upload as an update to the existing product",
+  "compatibilityInstaller": "com.user.happtoggle-1.12.4.streamDeckPlugin; not for the public Marketplace product",
+  "marketplaceSubmission": "Not submitted automatically; CLI validation does not claim Marketplace review/DRM approval",
+  "uiLanguages": ["en"],
+  "sdkVersion": 3,
+  "nodeSDK": "3.0.2",
+  "elgatoCLI": "1.10.2",
+  "license": "MIT",
+  "validationReport": "VALIDATION.json",
+  "packageReport": "PACKAGE_CHECK.json",
+  "existingReleasesPolicy": "Do not modify older tags, releases or assets",
+  "documentationPolicy": "Preserve the owner's README and repository description",
+  "remainingManualChecks": "Physical Stream Deck controls/display, normal update installation and Happ window-state regression; Elgato submission/review"
 }

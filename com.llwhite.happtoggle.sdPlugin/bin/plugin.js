@@ -38,9 +38,9 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 
-// happ-toggle/publish/1.12.1/github/com.llwhite.happtoggle.sdPlugin/lib/sdk.js
+// happ-toggle/builds/stability-1.12.4/com.llwhite.happtoggle.sdPlugin/lib/sdk.js
 var require_sdk = __commonJS({
-  "happ-toggle/publish/1.12.1/github/com.llwhite.happtoggle.sdPlugin/lib/sdk.js"(exports, module) {
+  "happ-toggle/builds/stability-1.12.4/com.llwhite.happtoggle.sdPlugin/lib/sdk.js"(exports, module) {
     "use strict";
     module.exports = function createSDKAdapter(sdk, { actionIds, onMessage, log }) {
       const streamDeck2 = sdk.default;
@@ -116,7 +116,8 @@ var require_sdk = __commonJS({
           const screen = action2.isDial() || action2.isNeoInfobar();
           const fail = () => log("Stream Deck SDK command failed:", message.event);
           if (message.event === "setFeedbackLayout" && screen) {
-            placement.layout = placement.layout.then(() => {
+            placement.layout = placement.layout.catch(() => {
+            }).then(() => {
               if (current()) return action2.setFeedbackLayout(payload.layout);
             });
             placement.layout.catch(fail);
@@ -145,9 +146,9 @@ var require_sdk = __commonJS({
   }
 });
 
-// happ-toggle/publish/1.12.1/github/com.llwhite.happtoggle.sdPlugin/lib/speedtest.js
+// happ-toggle/builds/stability-1.12.4/com.llwhite.happtoggle.sdPlugin/lib/speedtest.js
 var require_speedtest = __commonJS({
-  "happ-toggle/publish/1.12.1/github/com.llwhite.happtoggle.sdPlugin/lib/speedtest.js"(exports, module) {
+  "happ-toggle/builds/stability-1.12.4/com.llwhite.happtoggle.sdPlugin/lib/speedtest.js"(exports, module) {
     "use strict";
     var { execFile } = __require("child_process");
     var fs3 = __require("fs");
@@ -160,8 +161,10 @@ var require_speedtest = __commonJS({
     var DOWNLOAD_BYTES = 25e6;
     var FALLBACK_BYTES = 5e6;
     var UPLOAD_BYTES = 8 * 1024 * 1024;
+    var FORMAT = "%{http_code}|%{size_download}|%{time_total}|%{time_starttransfer}|%{time_pretransfer}|%{content_type}";
+    var UP_FORMAT = FORMAT.replace("size_download", "size_upload");
     function abortError() {
-      const error40 = new Error("\u0437\u0430\u043C\u0435\u0440 \u043E\u0442\u043C\u0435\u043D\u0451\u043D");
+      const error40 = new Error("Speed test cancelled");
       error40.name = "AbortError";
       return error40;
     }
@@ -171,57 +174,59 @@ var require_speedtest = __commonJS({
     function curl(args, timeoutMs, signal) {
       throwIfAborted(signal);
       return new Promise((resolve, reject) => {
-        execFile(CURL, args, { windowsHide: true, timeout: timeoutMs, maxBuffer: 1024 * 1024, signal }, (err, stdout, stderr) => {
+        execFile(CURL, args, { windowsHide: true, timeout: timeoutMs, maxBuffer: 1024 * 1024, ...signal ? { signal } : {} }, (err, stdout, stderr) => {
           if (signal && signal.aborted || err && err.name === "AbortError") return reject(abortError());
           resolve({ err, out: String(stdout || "").trim(), stderr: String(stderr || "").trim() });
         });
       });
     }
     function baseArgs(o, headers = []) {
-      const a = ["-q", "-s", "-S", "--connect-timeout", "8", "-H", "Cache-Control: no-cache"];
+      const a = ["-q", "-s", "-S", "--connect-timeout", "8", "-H", "Cache-Control: no-cache", "-H", "Accept-Encoding: identity"];
       if (o.proxy) a.push("-x", o.proxy, "--noproxy", "");
       else a.push("--noproxy", "*");
       for (const h of headers) a.push("-H", h);
       return a;
     }
     function details(r) {
-      return String(r.stderr || r.err && `curl code ${r.err.code || "unknown"}` || "\u043D\u0435\u0442 \u043E\u0442\u0432\u0435\u0442\u0430").replace(/(\w+:\/\/)[^\s/]*@/g, "$1***@").slice(0, 200);
+      return String(r.stderr || r.err && `curl code ${r.err.code || "unknown"}` || "no response").replace(/(\w+:\/\/)[^\s/]*@/g, "$1***@").slice(0, 200);
     }
     function parseMetrics(r) {
       const fields = r.out.split("|");
-      const [code, size, time3, first, ready] = fields.map((x) => x.trim() ? Number(x.replace(",", ".")) : NaN);
-      if (fields.length !== 5 || ![code, size, time3, first, ready].every(Number.isFinite) || !Number.isInteger(code) || !Number.isInteger(size) || size < 0 || time3 <= 0 || first < 0 || ready < 0 || ready > time3 || first > time3) {
-        throw new Error(`\u043D\u0435\u0432\u0435\u0440\u043D\u044B\u0435 \u0434\u0430\u043D\u043D\u044B\u0435 curl: ${details(r)}`);
+      const [code, size, time3, first, ready] = fields.slice(0, 5).map((x) => x.trim() ? Number(x.replace(",", ".")) : NaN);
+      if (fields.length !== 6 || ![code, size, time3, first, ready].every(Number.isFinite) || !Number.isInteger(code) || code < 0 || code > 599 || !Number.isSafeInteger(size) || size < 0 || time3 <= 0 || first < 0 || ready < 0 || ready > time3 || first > time3) {
+        throw new Error(`Invalid curl metrics: ${details(r)}`);
       }
-      return { code, size, time: time3, first, ready };
+      return { code, size, time: time3, first, ready, contentType: fields[5].trim().toLowerCase() };
     }
     function metrics(r) {
-      const { code, size, time: time3, first, ready } = parseMetrics(r);
-      if (code !== 200) {
-        const error40 = new Error(code === 429 ? "\u0441\u0435\u0440\u0432\u0435\u0440 \u043E\u0433\u0440\u0430\u043D\u0438\u0447\u0438\u043B \u0447\u0430\u0441\u0442\u043E\u0442\u0443 \u0437\u0430\u043F\u0440\u043E\u0441\u043E\u0432 (HTTP 429); \u043F\u043E\u0432\u0442\u043E\u0440\u0438\u0442\u0435 \u043F\u043E\u0437\u0436\u0435" : `\u0441\u0435\u0440\u0432\u0435\u0440 \u0437\u0430\u043C\u0435\u0440\u0430 \u0432\u0435\u0440\u043D\u0443\u043B HTTP ${code}: ${details(r)}`);
-        error40.httpCode = code;
+      const m = parseMetrics(r);
+      if (m.code !== 200) {
+        const error40 = new Error(m.code === 429 ? "Rate limited (HTTP 429); try again later" : `Test server returned HTTP ${m.code}: ${details(r)}`);
+        error40.httpCode = m.code;
         throw error40;
       }
-      if (r.err && r.err.code !== 28 && r.err.code !== "28") throw new Error(`\u043E\u0448\u0438\u0431\u043A\u0430 curl: ${details(r)}`);
-      if (size <= 0) throw new Error(`\u0441\u0435\u0440\u0432\u0435\u0440 \u043D\u0435 \u043F\u0435\u0440\u0435\u0434\u0430\u043B \u0434\u0430\u043D\u043D\u044B\u0435: ${details(r)}`);
-      return { size, time: time3, first, ready, timedOut: !!r.err };
+      if (r.err && r.err.code !== 28 && r.err.code !== "28") throw new Error(`curl failed: ${details(r)}`);
+      if (m.size <= 0) throw new Error(`No transferred data: ${details(r)}`);
+      return { ...m, timedOut: !!r.err };
     }
     async function fetchJson(o, url2) {
       const r = await curl([
         ...baseArgs(o, ["Accept: application/json"]),
         "--max-time",
         "12",
+        "--max-filesize",
+        "1048576",
         "-w",
         "\n__HTTP__%{http_code}",
         url2
       ], 15e3, o.signal);
       const marker = r.out.lastIndexOf("\n__HTTP__");
       const code = marker < 0 ? 0 : Number(r.out.slice(marker + 9));
-      if (r.err || code !== 200) throw new Error(`\u043D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u043F\u043E\u043B\u0443\u0447\u0438\u0442\u044C \u0441\u043F\u0438\u0441\u043E\u043A \u0441\u0435\u0440\u0432\u0435\u0440\u043E\u0432 (HTTP ${code}): ${details(r)}`);
+      if (r.err || code !== 200) throw new Error(`Server discovery failed (HTTP ${code}): ${details(r)}`);
       try {
         return JSON.parse(r.out.slice(0, marker));
       } catch (_) {
-        throw new Error("\u043D\u0435\u0432\u0435\u0440\u043D\u044B\u0439 \u043E\u0442\u0432\u0435\u0442 \u0441\u0435\u0440\u0432\u0438\u0441\u0430 \u0441\u043E \u0441\u043F\u0438\u0441\u043A\u043E\u043C \u0441\u0435\u0440\u0432\u0435\u0440\u043E\u0432");
+        throw new Error("Invalid server discovery response");
       }
     }
     async function pingUrl(o, url2, headers = []) {
@@ -264,7 +269,7 @@ var require_speedtest = __commonJS({
         "-o",
         NULL_DEV,
         "-w",
-        "%{http_code}|%{size_upload}|%{time_total}|%{time_starttransfer}|%{time_pretransfer}",
+        UP_FORMAT,
         "--max-time",
         "6",
         "-H",
@@ -276,7 +281,7 @@ var require_speedtest = __commonJS({
         endpoint.uploadUrl
       ], 9e3, o.signal);
       const m = metrics(r);
-      if (m.timedOut || m.size !== 1) throw new Error("\u0441\u0435\u0440\u0432\u0435\u0440 \u043D\u0435 \u043F\u0440\u0438\u043D\u044F\u043B \u043F\u0440\u043E\u0432\u0435\u0440\u043E\u0447\u043D\u044B\u0439 POST");
+      if (m.timedOut || m.size !== 1) throw new Error("Upload preflight was not acknowledged");
     }
     function yandexUrl(url2) {
       try {
@@ -288,44 +293,45 @@ var require_speedtest = __commonJS({
     }
     async function yandexEndpoint(o) {
       const data = await fetchJson(o, "https://yandex.ru/internet/api/v0/get-probes");
-      const latencies = data.latency && data.latency.probes || [];
-      const downloads = data.download && data.download.probes || [];
-      const uploads = data.upload && data.upload.probes || [];
+      const latencies = data && data.latency && data.latency.probes;
+      const downloads = data && data.download && data.download.probes;
+      const uploads = data && data.upload && data.upload.probes;
+      if (![latencies, downloads, uploads].every(Array.isArray)) throw new Error("Invalid Yandex discovery response");
       const headers = ["User-Agent: Mozilla/5.0", "Referer: https://yandex.ru/internet", "Origin: https://yandex.ru"];
       for (const candidate of latencies.slice(0, 5)) {
-        const ping = yandexUrl(candidate.url);
+        const ping = candidate && yandexUrl(candidate.url);
         if (!ping) continue;
         const down = downloads.find((p) => {
-          const u = yandexUrl(p.url);
-          return u && u.hostname === ping.hostname && /\/50mb(?:\?|$)/i.test(u.pathname);
+          const u = p && yandexUrl(p.url);
+          return u && u.hostname === ping.hostname && /\/50mb$/i.test(u.pathname) && !p.timeout;
         });
         const up = uploads.find((p) => {
-          const u = yandexUrl(p.url);
+          const u = p && yandexUrl(p.url);
           return u && u.hostname === ping.hostname && !p.timeout;
         });
         if (!down || !up) continue;
-        const ms = await pingUrl(o, ping.href, headers);
-        if (ms == null) continue;
         const endpoint = {
-          pingMs: ms,
           downloadUrl: () => down.url,
           uploadUrl: up.url,
           headers,
-          expectedDown: null,
-          uploadBytes: 50 * 1024 * 1024
+          expectedDown: 50 * 1024 * 1024,
+          uploadBytes: 8 * 1024 * 1024
         };
         try {
+          const ms = await pingUrl(o, ping.href, headers);
+          if (ms == null) continue;
           await checkUpload(o, endpoint);
           endpoint.pingMs = await stablePing(o, ping.href, headers, ms);
           return endpoint;
-        } catch (_) {
+        } catch (e) {
+          throwIfAborted(o.signal);
         }
       }
-      throw new Error("\u042F\u043D\u0434\u0435\u043A\u0441 \u0418\u043D\u0442\u0435\u0440\u043D\u0435\u0442\u043E\u043C\u0435\u0442\u0440: \u043D\u0435\u0442 \u0434\u043E\u0441\u0442\u0443\u043F\u043D\u043E\u0433\u043E \u0441\u0435\u0440\u0432\u0435\u0440\u0430 \u0437\u0430\u043C\u0435\u0440\u0430");
+      throw new Error("Yandex: no available test server");
     }
     async function speedtestEndpoint(o) {
       const servers = await fetchJson(o, "https://www.speedtest.net/api/js/servers?engine=js");
-      if (!Array.isArray(servers)) throw new Error("Speedtest.net: \u043D\u0435\u0432\u0435\u0440\u043D\u044B\u0439 \u0441\u043F\u0438\u0441\u043E\u043A \u0441\u0435\u0440\u0432\u0435\u0440\u043E\u0432");
+      if (!Array.isArray(servers)) throw new Error("Speedtest.net: invalid server list");
       const ids = [...new Set(servers.map((s) => String(s && s.id || "")))].filter((id) => /^\d{1,8}$/.test(id)).slice(0, 4);
       const probes = await Promise.all(ids.map(async (id) => {
         const base = `https://server-${id}.prod.hosts.ooklaserver.net:8080`;
@@ -334,8 +340,7 @@ var require_speedtest = __commonJS({
         if (first == null) return null;
         return { ms: await stablePing(o, url2, [], first), base, id };
       }));
-      const candidates = probes.filter(Boolean).sort((a, b) => a.ms - b.ms);
-      for (const { ms, base, id } of candidates) {
+      for (const { ms, base, id } of probes.filter(Boolean).sort((a, b) => a.ms - b.ms)) {
         const endpoint = {
           pingMs: ms,
           server: `Speedtest.net #${id}`,
@@ -343,7 +348,7 @@ var require_speedtest = __commonJS({
           uploadUrl: `${base}/upload`,
           headers: [],
           expectedDown: DOWNLOAD_BYTES,
-          uploadBytes: 32 * 1024 * 1024
+          uploadBytes: UPLOAD_BYTES
         };
         try {
           const r = await curl([
@@ -353,104 +358,69 @@ var require_speedtest = __commonJS({
             "--max-time",
             "6",
             "-w",
-            "%{http_code}|%{size_download}|%{time_total}|%{time_starttransfer}|%{time_pretransfer}",
+            FORMAT,
             endpoint.downloadUrl(1e5)
           ], 9e3, o.signal);
           const m = metrics(r);
-          if (m.timedOut || m.size !== 1e5) continue;
+          if (m.timedOut || m.size !== 1e5 || /^(text\/html|application\/json)/.test(m.contentType)) continue;
           await checkUpload(o, endpoint);
           return endpoint;
-        } catch (_) {
+        } catch (e) {
+          throwIfAborted(o.signal);
         }
       }
-      throw new Error("Speedtest.net: \u043D\u0435\u0442 \u0434\u043E\u0441\u0442\u0443\u043F\u043D\u043E\u0433\u043E HTTPS-\u0441\u0435\u0440\u0432\u0435\u0440\u0430 \u0437\u0430\u043C\u0435\u0440\u0430");
+      throw new Error("Speedtest.net: no available HTTPS test server");
     }
     async function transfer(o, kind, endpoint, file2, downloadBytes, onRate) {
       const started = performance.now();
       const deadline = started + o.seconds * 1e3;
-      let bytes = 0;
-      let failure = null;
-      const count = o.provider === "cloudflare" ? 1 : o.streams;
-      const samples = [];
-      const percentile90 = (values) => {
-        values.sort((a, b) => a - b);
-        const position = (values.length - 1) * 0.9;
-        const low = Math.floor(position);
-        return values[low] + (values[Math.ceil(position)] - values[low]) * (position - low);
-      };
-      function rate() {
-        const elapsed = Math.max(1e-3, (performance.now() - started) / 1e3);
-        if (o.provider === "cloudflare") {
-          return samples.length ? percentile90(samples.map((s) => s.bytes * 8 / s.seconds)) : null;
-        }
-        return bytes * 8 / elapsed;
-      }
-      function record2(size, time3, ready) {
-        if (o.provider === "cloudflare") {
-          const seconds = time3 - ready;
-          if (seconds < 0.01) return;
-          samples.push({ bytes: size, seconds });
-        }
-        bytes += size;
-        if (onRate) onRate(rate() / 1e6);
-      }
+      let bytes = 0, requests = 0, failure = null;
+      const streams = o.provider === "cloudflare" ? 1 : o.streams;
+      const seconds = () => Math.max(1e-3, (performance.now() - started) / 1e3);
       async function worker() {
-        let attempt = 0;
-        while (!failure) {
-          throwIfAborted(o.signal);
-          const remaining = deadline - performance.now();
-          if (remaining < 250) break;
-          const requested = kind === "download" && o.provider === "cloudflare" && downloadBytes !== FALLBACK_BYTES ? ++attempt % 2 ? 1e7 : DOWNLOAD_BYTES : downloadBytes;
-          const expected = kind === "download" ? endpoint.expectedDown == null ? null : requested : endpoint.uploadBytes || UPLOAD_BYTES;
-          const budget = remaining + (kind === "upload" && o.provider !== "yandex" ? 2e3 : 0);
-          const args = [
-            ...baseArgs(o, endpoint.headers),
-            "-o",
-            NULL_DEV,
-            "-w",
-            kind === "download" ? "%{http_code}|%{size_download}|%{time_total}|%{time_starttransfer}|%{time_pretransfer}" : "%{http_code}|%{size_upload}|%{time_total}|%{time_starttransfer}|%{time_pretransfer}",
-            "--max-time",
-            (budget / 1e3).toFixed(3)
-          ];
-          if (kind === "download") args.push(endpoint.downloadUrl(requested));
-          else args.push(
-            "-H",
-            "Content-Type: application/octet-stream",
-            "-H",
-            "Expect:",
-            "--data-binary",
-            `@${file2}`,
-            endpoint.uploadUrl
-          );
-          const r = await curl(args, Math.ceil(budget) + 2e3, o.signal);
-          try {
-            const { code, size, time: time3, ready } = parseMetrics(r);
-            if (r.err && (r.err.code === 28 || r.err.code === "28") && performance.now() >= deadline - 250 && (code === 0 || code === 100)) {
-              if (o.provider === "yandex" && kind === "upload" && size > 0 && size <= expected) record2(size, time3, ready);
-              break;
-            }
+        try {
+          while (!failure) {
+            throwIfAborted(o.signal);
+            const remaining = deadline - performance.now();
+            if (remaining < 250) break;
+            const expected = kind === "download" ? downloadBytes : endpoint.uploadBytes;
+            const budget = remaining + (kind === "upload" ? 2e3 : 0);
+            const args = [
+              ...baseArgs(o, endpoint.headers),
+              "-o",
+              NULL_DEV,
+              "-w",
+              kind === "download" ? FORMAT : UP_FORMAT,
+              "--max-time",
+              (budget / 1e3).toFixed(3)
+            ];
+            if (kind === "download") args.push(endpoint.downloadUrl(expected));
+            else args.push("-H", "Content-Type: application/octet-stream", "-H", "Expect:", "--data-binary", `@${file2}`, endpoint.uploadUrl);
+            const r = await curl(args, Math.ceil(budget) + 2e3, o.signal);
+            throwIfAborted(o.signal);
             const m = metrics(r);
-            if (expected != null && (m.size > expected || !m.timedOut && m.size !== expected)) {
-              throw new Error(`\u043D\u0435\u043F\u043E\u043B\u043D\u044B\u0439 \u043E\u0442\u0432\u0435\u0442 ${kind}: ${m.size} \u0438\u0437 ${expected} \u0431\u0430\u0439\u0442`);
-            }
-            if (o.provider === "cloudflare" && kind === "upload" && m.timedOut) break;
-            record2(m.size, m.time, m.ready);
-          } catch (e) {
-            failure = e;
+            if (m.size > expected || !m.timedOut && m.size !== expected) throw new Error(`Incomplete ${kind}: ${m.size} of ${expected} bytes`);
+            if (kind === "download" && /^(text\/html|application\/json)/.test(m.contentType)) throw new Error("Test download returned a page instead of binary data");
+            if (kind === "upload" && m.timedOut) throw new Error("Upload was not acknowledged; increase test duration or reduce streams");
+            bytes += m.size;
+            requests++;
+            if (onRate) onRate(bytes * 8 / seconds() / 1e6);
           }
+        } catch (e) {
+          if (!failure) failure = e;
         }
       }
-      await Promise.all(Array.from({ length: count }, () => worker()));
+      await Promise.all(Array.from({ length: streams }, () => worker()));
+      throwIfAborted(o.signal);
       if (failure) throw failure;
-      if (!bytes) throw new Error(`\u043D\u0435\u0442 \u0434\u043E\u0441\u0442\u043E\u0432\u0435\u0440\u043D\u044B\u0445 \u0434\u0430\u043D\u043D\u044B\u0445 ${kind}; \u0443\u0432\u0435\u043B\u0438\u0447\u044C\u0442\u0435 \u0434\u043B\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0441\u0442\u044C \u0437\u0430\u043C\u0435\u0440\u0430`);
-      const result = rate();
-      if (!Number.isFinite(result) || result <= 0) throw new Error(`\u043D\u0435\u0432\u0435\u0440\u043D\u044B\u0439 \u0440\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442 ${kind}`);
-      return result;
+      if (!bytes) throw new Error(`No reliable ${kind} data; increase test duration`);
+      const elapsed = seconds();
+      return { bps: bytes * 8 / elapsed, bytes, seconds: elapsed, requests, streams };
     }
     async function upload(o, endpoint, onRate) {
       const file2 = path5.join(os.tmpdir(), `happ_up_${process.pid}_${crypto.randomBytes(6).toString("hex")}.bin`);
-      fs3.writeFileSync(file2, crypto.randomBytes(endpoint.uploadBytes || UPLOAD_BYTES));
       try {
+        fs3.writeFileSync(file2, crypto.randomBytes(endpoint.uploadBytes || UPLOAD_BYTES));
         return await transfer(o, "upload", endpoint, file2, null, onRate);
       } finally {
         try {
@@ -465,7 +435,7 @@ var require_speedtest = __commonJS({
       o.server = String(o.server).replace(/\/+$/, "");
       o.seconds = Math.max(3, Math.min(20, Number(o.seconds) || 6));
       o.streams = Math.max(1, Math.min(8, Math.trunc(Number(o.streams) || 4)));
-      if (!["yandex", "cloudflare", "speedtest"].includes(o.provider)) throw new Error("\u043D\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043D\u044B\u0439 \u0441\u0435\u0440\u0432\u0435\u0440 \u0437\u0430\u043C\u0435\u0440\u0430");
+      if (!["yandex", "cloudflare", "speedtest"].includes(o.provider)) throw new Error("Unknown test service");
       onPhase && onPhase("ping");
       let endpoint;
       if (o.provider === "yandex") endpoint = await yandexEndpoint(o);
@@ -474,7 +444,7 @@ var require_speedtest = __commonJS({
         pingMs: await pingCloudflare(o),
         headers: [],
         expectedDown: DOWNLOAD_BYTES,
-        uploadBytes: 16 * 1024 * 1024,
+        uploadBytes: UPLOAD_BYTES,
         downloadUrl: (size) => `${o.server}/__down?bytes=${size}&r=${crypto.randomBytes(8).toString("hex")}`,
         uploadUrl: `${o.server}/__up`
       };
@@ -484,14 +454,14 @@ var require_speedtest = __commonJS({
       const onDown = (downMbps2) => onProgress && onProgress({ pingMs, downMbps: downMbps2 });
       let down;
       try {
-        down = await transfer(o, "download", endpoint, null, endpoint.expectedDown || DOWNLOAD_BYTES, onDown);
+        down = await transfer(o, "download", endpoint, null, endpoint.expectedDown, onDown);
       } catch (e) {
         if (o.provider !== "cloudflare" || e.httpCode !== 429) throw e;
         endpoint.expectedDown = FALLBACK_BYTES;
         onProgress && onProgress({ downMbps: null });
         down = await transfer(o, "download", endpoint, null, FALLBACK_BYTES, onDown);
       }
-      const downMbps = down / 1e6;
+      const downMbps = down.bps / 1e6;
       onProgress && onProgress({ pingMs, downMbps });
       onPhase && onPhase("upload");
       if (o.provider === "cloudflare") await checkUpload(o, endpoint);
@@ -499,92 +469,143 @@ var require_speedtest = __commonJS({
       return {
         pingMs,
         downMbps,
-        upMbps: up / 1e6,
-        server: endpoint.server || new URL(endpoint.uploadUrl).hostname
+        upMbps: up.bps / 1e6,
+        server: endpoint.server || new URL(endpoint.uploadUrl).hostname,
+        measurement: { method: "http-goodput", download: down, upload: up }
       };
     }
     module.exports = { runSpeedTest };
   }
 });
 
-// happ-toggle/publish/1.12.1/github/com.llwhite.happtoggle.sdPlugin/lib/happ-window.js
+// happ-toggle/builds/stability-1.12.4/com.llwhite.happtoggle.sdPlugin/lib/happ-window.js
 var require_happ_window = __commonJS({
-  "happ-toggle/publish/1.12.1/github/com.llwhite.happtoggle.sdPlugin/lib/happ-window.js"(exports, module) {
+  "happ-toggle/builds/stability-1.12.4/com.llwhite.happtoggle.sdPlugin/lib/happ-window.js"(exports, module) {
     "use strict";
     var { exec, execFile } = __require("child_process");
     var API = String.raw`
+$ErrorActionPreference = 'Stop'
 Add-Type -TypeDefinition @'
 using System;
+using System.Text;
 using System.Runtime.InteropServices;
 public static class HappToggleWindow {
+  public delegate bool WindowCallback(IntPtr h, IntPtr p);
+  [DllImport("user32.dll")] public static extern bool EnumWindows(WindowCallback callback, IntPtr p);
+  [DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(IntPtr h, out uint pid);
   [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr h);
   [DllImport("user32.dll")] public static extern bool IsIconic(IntPtr h);
-  [DllImport("user32.dll")] public static extern bool ShowWindowAsync(IntPtr h, int command);
+  [DllImport("user32.dll")] public static extern bool IsWindow(IntPtr h);
+  [DllImport("user32.dll", CharSet = CharSet.Unicode)] public static extern int GetClassName(IntPtr h, StringBuilder s, int count);
+  [DllImport("user32.dll", CharSet = CharSet.Unicode)] public static extern int GetWindowText(IntPtr h, StringBuilder s, int count);
+  [DllImport("user32.dll", SetLastError = true)] public static extern bool PostMessage(IntPtr h, uint message, IntPtr wParam, IntPtr lParam);
+  public static bool IsMainWindow(IntPtr h, uint pid) {
+    uint owner;
+    GetWindowThreadProcessId(h, out owner);
+    if (!IsWindow(h) || owner != pid) return false;
+    var cls = new StringBuilder(256);
+    var title = new StringBuilder(256);
+    GetClassName(h, cls, cls.Capacity);
+    GetWindowText(h, title, title.Capacity);
+    return cls.ToString().StartsWith("Qt") && cls.ToString().EndsWith("QWindowIcon") &&
+      (title.ToString() == "Happ" || title.ToString().StartsWith("Happ "));
+  }
 }
-'@ -ErrorAction Stop
+'@
+function Test-HappProcess($p) {
+  return ($p -and $p.ProcessName -eq 'Happ' -and $p.Path -and
+    [IO.Path]::GetFileName($p.Path) -eq 'Happ.exe' -and
+    [IO.Path]::GetFileName([IO.Path]::GetDirectoryName($p.Path)) -eq 'Happ')
+}
 `;
     var SNAPSHOT = `${API}
-$p = Get-Process -Name Happ -ErrorAction SilentlyContinue |
-  Where-Object { $_.Path -and [IO.Path]::GetFileName($_.Path) -eq 'Happ.exe' -and
-    [IO.Path]::GetFileName([IO.Path]::GetDirectoryName($_.Path)) -eq 'Happ' } | Select-Object -First 1
-if ($p) {
-  $h = $p.MainWindowHandle
-  $state = if ($h -eq [IntPtr]::Zero -or -not [HappToggleWindow]::IsWindowVisible($h)) { 'hidden' }
-    elseif ([HappToggleWindow]::IsIconic($h)) { 'minimized' } else { 'visible' }
-  Write-Output "$($p.Id)|$state"
-}`;
-    function restoreScript(pid, state) {
-      const command = state === "hidden" ? 0 : 6;
+$apps = @(Get-Process -Name Happ -ErrorAction SilentlyContinue | Where-Object { Test-HappProcess $_ })
+if ($apps.Count -ne 1) { Write-Output 'unavailable'; exit }
+$p = $apps[0]
+$matches = New-Object 'System.Collections.Generic.List[System.IntPtr]'
+$callback = [HappToggleWindow+WindowCallback]{param($h, $unused)
+  if ([HappToggleWindow]::IsMainWindow($h, $p.Id)) { $matches.Add($h) }
+  return $true
+}
+[void][HappToggleWindow]::EnumWindows($callback, [IntPtr]::Zero)
+if ($matches.Count -ne 1) { Write-Output 'unavailable'; exit }
+$h = $matches[0]
+$state = if ([HappToggleWindow]::IsIconic($h)) { 'minimized' }
+  elseif ([HappToggleWindow]::IsWindowVisible($h)) { 'visible' } else { 'tray' }
+Write-Output "$($p.Id)|$($h.ToInt64())|$($p.StartTime.ToUniversalTime().Ticks)|$state"
+`;
+    function restoreScript(snapshot) {
+      const { pid, handle, started, state } = snapshot;
+      const message = state === "tray" ? "0x0010" : "0x0112";
+      const parameter = state === "tray" ? "0" : "0xF020";
       return `${API}
-for ($i = 0; $i -lt 20; $i++) {
-  Start-Sleep -Milliseconds 200
+$h = [IntPtr]::new([long]${handle})
+$deadline = [Diagnostics.Stopwatch]::StartNew()
+while ($deadline.ElapsedMilliseconds -lt 1800) {
   $p = Get-Process -Id ${pid} -ErrorAction SilentlyContinue
-  if (-not $p -or $p.ProcessName -ne 'Happ' -or -not $p.Path -or
-      [IO.Path]::GetFileName($p.Path) -ne 'Happ.exe' -or
-      [IO.Path]::GetFileName([IO.Path]::GetDirectoryName($p.Path)) -ne 'Happ') { break }
-  $h = $p.MainWindowHandle
-  if ($h -ne [IntPtr]::Zero -and [HappToggleWindow]::IsWindowVisible($h)) {
-    if (${command} -eq 0 -or -not [HappToggleWindow]::IsIconic($h)) {
-      [void][HappToggleWindow]::ShowWindowAsync($h, ${command})
+  if (-not (Test-HappProcess $p) -or
+      $p.StartTime.ToUniversalTime().Ticks.ToString() -ne '${started}' -or
+      -not [HappToggleWindow]::IsMainWindow($h, ${pid})) { Write-Output 'stale'; exit }
+  if ([HappToggleWindow]::IsWindowVisible($h) -and
+      (${state === "tray" ? "$true" : "-not [HappToggleWindow]::IsIconic($h)"})) {
+    # Let Happ handle its own close/minimize event; never force native visibility.
+    if (-not [HappToggleWindow]::PostMessage($h, ${message}, [IntPtr]${parameter}, [IntPtr]::Zero)) {
+      throw 'Window state request failed'
     }
+    Write-Output 'requested'
+    exit
   }
-}`;
+  Start-Sleep -Milliseconds 40
+}
+Write-Output 'unchanged'
+`;
     }
     module.exports = function makeToggle(log, commands = { exec, execFile }) {
-      const ps = (script, timeout, callback) => commands.execFile(
-        "powershell.exe",
-        ["-NoProfile", "-NonInteractive", "-Command", script],
-        { windowsHide: true, timeout, maxBuffer: 4096 },
-        callback
-      );
-      return async function toggleKeepingTray(deeplink) {
-        if (deeplink !== "happ://toggle_without_ui") throw new Error("Unsupported Happ deeplink");
-        const snapshot = await new Promise((resolve) => {
-          ps(SNAPSHOT, 5e3, (err, stdout) => {
+      const ps = (script) => new Promise((resolve) => {
+        commands.execFile(
+          "powershell.exe",
+          ["-NoProfile", "-NonInteractive", "-Command", script],
+          { windowsHide: true, timeout: 6e3, maxBuffer: 4096 },
+          (err, stdout) => {
             if (err) {
-              log("window snapshot error:", err.message);
-              return resolve(null);
-            }
-            const match = String(stdout || "").trim().match(/^(\d+)\|(hidden|minimized|visible)$/);
-            resolve(match ? { pid: Number(match[1]), state: match[2] } : null);
+              log("window helper error:", err.message);
+              resolve(null);
+            } else resolve(String(stdout || "").trim());
+          }
+        );
+      });
+      async function toggleKeepingTray(deeplink) {
+        const output = await ps(SNAPSHOT);
+        const match = output && output.match(/^([1-9]\d{0,9})\|([1-9]\d{0,15})\|([1-9]\d{0,18})\|(tray|minimized|visible)$/);
+        const snapshot = match ? { pid: match[1], handle: match[2], started: match[3], state: match[4] } : null;
+        const launched = await new Promise((resolve) => {
+          commands.exec(`start "" "${deeplink}"`, { windowsHide: true }, (err) => {
+            if (err) log("deeplink error:", err.message);
+            resolve(!err);
           });
         });
-        commands.exec(`start "" "${deeplink}"`, { windowsHide: true }, (err) => {
-          if (err) log("deeplink error:", err.message);
-        });
-        if (snapshot && snapshot.state !== "visible") {
-          ps(restoreScript(snapshot.pid, snapshot.state), 7e3, (err) => {
-            if (err) log("window restore error:", err.message);
-          });
+        if (launched && snapshot && snapshot.state !== "visible") {
+          const result = await ps(restoreScript(snapshot));
+          if (result === "stale") log("window state skipped: Happ window changed");
+        } else if (launched && !snapshot) {
+          log("window state unavailable; Happ visibility left unchanged by plugin");
         }
+      }
+      let previous = Promise.resolve();
+      return function enqueueToggle(deeplink) {
+        if (deeplink !== "happ://toggle_without_ui") return Promise.reject(new Error("Unsupported Happ deeplink"));
+        const next = previous.then(() => toggleKeepingTray(deeplink));
+        previous = next.catch(() => {
+        });
+        return next;
       };
     };
   }
 });
 
-// happ-toggle/publish/1.12.1/github/com.llwhite.happtoggle.sdPlugin/lib/display.js
+// happ-toggle/builds/stability-1.12.4/com.llwhite.happtoggle.sdPlugin/lib/display.js
 var require_display = __commonJS({
-  "happ-toggle/publish/1.12.1/github/com.llwhite.happtoggle.sdPlugin/lib/display.js"(exports, module) {
+  "happ-toggle/builds/stability-1.12.4/com.llwhite.happtoggle.sdPlugin/lib/display.js"(exports, module) {
     "use strict";
     var PROVIDERS = ["yandex", "cloudflare", "speedtest"];
     var PROVIDER_NAMES = { yandex: "Yandex", cloudflare: "Cloudflare", speedtest: "Speedtest.net" };
@@ -19228,9 +19249,9 @@ var init_plugin = __esm({
   }
 });
 
-// happ-toggle/publish/1.12.1/github/com.llwhite.happtoggle.sdPlugin/plugin.js
+// happ-toggle/builds/stability-1.12.4/com.llwhite.happtoggle.sdPlugin/plugin.js
 var require_plugin = __commonJS({
-  "happ-toggle/publish/1.12.1/github/com.llwhite.happtoggle.sdPlugin/plugin.js"() {
+  "happ-toggle/builds/stability-1.12.4/com.llwhite.happtoggle.sdPlugin/plugin.js"() {
     var net = __require("net");
     var crypto = __require("crypto");
     var fs3 = __require("fs");
@@ -19351,13 +19372,13 @@ $pr = @(Get-Process | ForEach-Object { $_.ProcessName } | Sort-Object -Unique)
         if (cfg.proxyMatch && !new RegExp(cfg.proxyMatch, "i").test(p.proxyServer || "")) return "";
         return proxyUrlFromSystem(p);
       } catch (_) {
-        throw new Error("\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u043E\u043F\u0440\u0435\u0434\u0435\u043B\u0438\u0442\u044C \u043F\u0440\u043E\u043A\u0441\u0438 Happ. \u0417\u0430\u043C\u0435\u0440 \u043E\u0442\u043C\u0435\u043D\u0451\u043D, \u0447\u0442\u043E\u0431\u044B \u043D\u0435 \u0438\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u044C \u0434\u0440\u0443\u0433\u043E\u0439 \u043C\u0430\u0440\u0448\u0440\u0443\u0442.");
+        throw new Error("Cannot determine the Happ proxy. Test cancelled to avoid using a different route.");
       }
     }
     if (process.argv.includes("--speed")) {
       (async () => {
         const proxy = await resolveSpeedProxy();
-        console.log("proxy:", proxy ? "(enabled)" : "(\u043D\u0435\u0442)");
+        console.log("proxy:", proxy ? "(enabled)" : "(none)");
         const r = await runSpeedTest(
           {
             provider: process.argv.includes("--provider") ? process.argv[process.argv.indexOf("--provider") + 1] : "yandex",
@@ -19717,10 +19738,8 @@ $pr = @(Get-Process | ForEach-Object { $_.ProcessName } | Sort-Object -Unique)
             ws.sendJSON({ event: "setFeedbackLayout", context: m.context, payload: { layout: "layouts/neo.json" } });
           }
           renderCtx(m.context);
-          if (m.action === ACTION_TOGGLE || controller === "Encoder" || controller === "Neo") {
-            if (!timer && !polling) tick();
-            else schedule();
-          }
+          if (!timer && !polling) tick();
+          else schedule();
           break;
         }
         case "willDisappear": {
@@ -19837,7 +19856,7 @@ $pr = @(Get-Process | ForEach-Object { $_.ProcessName } | Sort-Object -Unique)
       }
     }
     if (!PORT || !UUID || !REGISTER) {
-      console.error("\u0417\u0430\u043F\u0443\u0441\u043A\u0430\u0435\u0442\u0441\u044F Stream Deck-\u043E\u043C. \u0414\u0438\u0430\u0433\u043D\u043E\u0441\u0442\u0438\u043A\u0430: node plugin.js --diag | node plugin.js --speed");
+      console.error("Started by Stream Deck. Diagnostics: node plugin.js --diag | node plugin.js --speed");
       process.exit(1);
     }
     Promise.resolve().then(() => (init_plugin(), plugin_exports)).then((sdk) => {

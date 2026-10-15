@@ -51,7 +51,7 @@ module.exports = function createSDKAdapter(sdk, { actionIds, onMessage, log }) {
       const screen = action.isDial() || action.isNeoInfobar();
       const fail = () => log('Stream Deck SDK command failed:', message.event);
       if (message.event === 'setFeedbackLayout' && screen) {
-        placement.layout = placement.layout.then(() => {
+        placement.layout = placement.layout.catch(() => {}).then(() => {
           if (current()) return action.setFeedbackLayout(payload.layout);
         });
         placement.layout.catch(fail);

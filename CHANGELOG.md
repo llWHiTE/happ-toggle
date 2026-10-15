@@ -2,6 +2,29 @@
 
 This history is reconstructed from retained build manifests/README files and the project's recorded development changes. Early builds were local packages, not tagged public GitHub releases. Dates are omitted where not evidenced. The earliest retained unsuffixed package identifies itself as **1.1.1.0**; a separate 1.0 release is not evidenced. Package filenames and manifest versions were not always aligned.
 
+## 1.12.4 (local stability build)
+
+- Keep English as the sole active localization resource for all application locales; remove the current Russian resource and safely ignore obsolete per-action language settings without dropping other settings.
+- Repair the test fixtures for the official SDK and asynchronous inspector resources. Add deterministic transfer-accounting tests, real curl tests against a loopback-only HTTP fixture, and a single offline test runner.
+- Report HTTP phase-average goodput for all services: received download bytes or fully acknowledged upload bytes divided by one actual monotonic phase duration. Include connection/HTTP waits and late final-transfer completion time; remove Cloudflare's individual-sample percentile calculation.
+- Reject unacknowledged timed-out uploads, invalid sizes/metrics, and HTML/JSON download pages. Preserve explicit proxy/direct routing, cancellation and temporary-file cleanup.
+- Fix curl startup with no AbortSignal, connection/status monitoring for a standalone Speed Test key, and SDK feedback-layout recovery after a transient failure.
+- Preserve the user-confirmed 1.12.3 Happ window behavior without changing the toggle helper. VPN-server selection remains outside the plugin's controls; dial/key service selection changes only the speed-test provider.
+- Record separate offline, native-window, loopback-curl, public-endpoint and packaging checks in the local release's VALIDATION.json. A public smoke result is not a line-capacity guarantee; new physical-device verification and Marketplace approval are not claimed.
+
+## 1.12.3 (local window-state build)
+
+- Snapshot the existing Happ Qt main window with EnumWindows, including hidden windows. Preserve visible/tray/minimized states when switching the connection.
+- If a deeplink reveals a previously hidden window, send one normal WM_CLOSE so Happ's own close-to-tray handler synchronizes its Qt/tray state. Restore a taskbar-minimized window with SC_MINIMIZE instead of sending it to tray.
+- Validate the process, creation time and window identity before restoration; stop after the first request. Do not use SW_HIDE, focus manipulation or a repeated hide loop. A brief deeplink-induced window flash can still occur.
+- Add unit tests and an isolated native Windows window fixture covering close-to-tray, manual reopening, visible and minimized states. No real VPN toggle was performed during automated verification.
+
+## 1.12.2 (local tray-fix build)
+
+- Remove external PowerShell window-state polling and repeated SW_HIDE/SW_MINIMIZE after the Happ toggle deeplink. Leave Qt window/tray visibility under Happ's control so the plugin does not interfere with reopening the server-selection window.
+- Keep the existing happ://toggle_without_ui command, connection polling, button settings and server selection unchanged.
+- Add regression tests for a single deeplink invocation with no external window management. Live tray reopening still requires verification with Happ.
+
 ## 1.12.1
 
 - Use Stream Deck's built-in localization resources for manifest metadata, property inspector text and rendered errors/speed units.

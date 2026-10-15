@@ -1,8 +1,8 @@
 {
   "name": "happ-toggle-release-tools",
-  "version": "1.12.0",
+  "version": "1.12.4",
   "private": true,
   "license": "MIT",
-  "scripts": { "artwork": "node build-media.cjs", "build": "node build-plugin.cjs", "test": "node test-sdk.cjs" },
+  "scripts": { "artwork": "node build-media.cjs", "build": "node build-plugin.cjs", "test": "node run-tests.cjs", "test:native": "node test-happ-window-native.cjs" },
   "devDependencies": { "@elgato/cli": "1.10.2", "@elgato/streamdeck": "3.0.2", "esbuild": "0.25.12" }
 }
